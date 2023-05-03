@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-824252813 @0xForp/anti-root-and-ssl-bypass-in-1
 /*  Did this out of necessity for a engagement, I did NOT write the 2 scripts used here the authors are referenced in the beginning of the scripts.
     
     I simply put together the anti-root and ssl bypass in one script for a pentest that i needed to use a physycal device

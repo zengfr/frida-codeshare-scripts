@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1397042559 @dki/ios-app-info
 /*
  *  Convenience functions to access app info.
  *  Dump key app paths and metadata:

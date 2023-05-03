@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1334395099 @cherpake/nsurlrequest-ios13
 console.log('Listening For Requests...');
 
 function toHexString(byteArray) {

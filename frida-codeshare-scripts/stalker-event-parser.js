@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1292983183 @mrmacete/stalker-event-parser
 'use strict';
 
 /*

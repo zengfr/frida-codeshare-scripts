@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1088109637 @vadim-a-yegorov/universalunpinner
 /**
  * Flutter, OkHTTPv3, HttpsURLConnection, TrustKit universal SSL unpinner for Android.
  * 

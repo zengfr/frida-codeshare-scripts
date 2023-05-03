@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1297749639 @0zl/msslpb
 // https://github.com/Eltion/Messenger-SSL-Pinning-Bypass/
 // https://github.com/Eltion/Messenger-SSL-Pinning-Bypass/
 // https://github.com/Eltion/Messenger-SSL-Pinning-Bypass/

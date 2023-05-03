@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1856240326 @AnonymousVip/bbox
 Java.perform(function() {
 let HelperJNI = Java.use("cn.tongdun.android.shell.common.HelperJNI");
 HelperJNI.base64encode.implementation = function(bArr){

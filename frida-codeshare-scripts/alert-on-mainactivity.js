@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//818307448 @realgam3/alert-on-mainactivity
 Java.perform(function() {
     var System = Java.use('java.lang.System');
     var ActivityThread = Java.use("android.app.ActivityThread");

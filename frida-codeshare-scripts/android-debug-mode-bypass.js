@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//841137279 @Raphkitue/android-debug-mode-bypass
 setTimeout(function() {
     Java.perform(function() {
         console.log("");

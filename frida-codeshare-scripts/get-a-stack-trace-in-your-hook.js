@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-2066478028 @razaina/get-a-stack-trace-in-your-hook
 Java.performNow(function(){
         var target = Java.use("com.pacakge.myClass")
         var threadef = Java.use('java.lang.Thread')

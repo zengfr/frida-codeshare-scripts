@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1207568565 @LAripping/trace-registernatives
 let nativeMethods = {"methods":[]}
 let addrRegisterNatives = null
 

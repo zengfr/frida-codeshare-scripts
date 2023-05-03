@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1765086636 @nuschpl/xamarin-root-detect-bypass
 Interceptor.attach(Module.findExportByName(null, 'stat'), {
     onEnter: function(args) {
         if (Java.available) {

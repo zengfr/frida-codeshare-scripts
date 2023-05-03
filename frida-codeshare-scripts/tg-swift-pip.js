@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//229141872 @stek29/tg-swift-pip
 const PIPVideoWindowClass = Object.keys(ObjC.classes).filter(function(k) {
     return k.indexOf('PIPVideoWindow') !== -1;
 })[0];

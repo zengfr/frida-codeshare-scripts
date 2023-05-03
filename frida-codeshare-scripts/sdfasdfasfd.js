@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-2049372025 @fredomadd/sdfasdfasfd
 // start with:
 //   frida -U -l pinning.js -f [APP_ID] --no-pause
 

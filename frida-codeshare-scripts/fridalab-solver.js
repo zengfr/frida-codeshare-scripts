@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//347813136 @TheZ3ro/fridalab-solver
 "use strict";
 
 function pad(n, width, z) {

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1913816607 @vu159951/test2112
 Java.perform(function () {
 
         var genOTP = Java.use("com.fpt.fisplugin.fisplugin.FISPlugin");

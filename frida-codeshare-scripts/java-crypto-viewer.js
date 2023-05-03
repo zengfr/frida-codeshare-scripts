@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-2127729479 @Serhatcck/java-crypto-viewer
 Java.perform(function(){
     var base64 = Java.use('java.util.Base64');
     

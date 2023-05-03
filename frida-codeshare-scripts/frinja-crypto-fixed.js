@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1446276532 @ensingerphilipp/frinja-crypto-fixed
 /*
 Update-Author: Philipp Ensinger || github.com/ensingerphilipp
 Original-Author: secretdiary.ninja

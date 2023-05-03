@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1434664887 @leolashkevych/android-broadcast-receiver
 /*
  * Android Broadcast Receiver
  *

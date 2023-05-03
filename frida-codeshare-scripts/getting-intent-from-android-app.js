@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1226490139 @crazypinecone/getting-intent-from-android-app
 import frida, sys
 
 

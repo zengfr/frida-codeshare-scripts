@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-342135627 @vumail159951/2
 Java.perform(function() {
 var res2 = Java.use('com.android.okhttp.Response$Builder');
     res2.build.implementation = function() {

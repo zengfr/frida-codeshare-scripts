@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1929274684 @mrmacete/uiwebview-ssl-validation-killer
 function killUIWebViewSSL() {
     Interceptor.attach(ObjC.classes.UIWebView["- webView:resource:canAuthenticateAgainstProtectionSpace:forDataSource:"].implementation, {
         onLeave: function(retval) {

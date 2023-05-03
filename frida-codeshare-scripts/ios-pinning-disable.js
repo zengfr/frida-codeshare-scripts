@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1959880329 @snooze6/ios-pinning-disable
 /*
     https://kov4l3nko.github.io/blog/2018-05-27-sll-pinning-hook-sectrustevaluate/
 

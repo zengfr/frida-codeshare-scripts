@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-565878524 @jackkongjr/load-from-asset-folder
 Java.perform(function() {
 
     var webView = Java.use("android.webkit.WebView");

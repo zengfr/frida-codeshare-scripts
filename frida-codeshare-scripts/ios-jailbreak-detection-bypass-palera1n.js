@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1718224030 @DevTraleski/ios-jailbreak-detection-bypass-palera1n
 const jailbreakPaths = [
     "/Applications/palera1n.app",
     "/tmp",

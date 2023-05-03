@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1578831295 @platix/ios-trustkit-ssl-unpinning
 if (ObjC.available) {
     console.log("SSLUnPinning Enabled");
     for (var className in ObjC.classes) {

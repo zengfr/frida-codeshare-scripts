@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1690277131 @Alkeraithe/monitorsql
 // Nawaf Alkerithe 
 // https://github.com/Alkeraithe
 // Alkeraithe@gmail.com

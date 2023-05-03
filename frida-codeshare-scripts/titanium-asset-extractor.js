@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1919198871 @jthuraisamy/titanium-asset-extractor
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 

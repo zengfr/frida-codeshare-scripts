@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//412394471 @vumail159951/asd1231
 Java.perform(function() {
       var ver = Java.use('android.os.Build$VERSION');
 

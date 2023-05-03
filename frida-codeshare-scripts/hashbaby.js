@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//397656229 @AnonymousVip/hashbaby
 Java.perform(function () {
 function hooking(hook,callback){
 var Exception = Java.use('java.lang.Exception');

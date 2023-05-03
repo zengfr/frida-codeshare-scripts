@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1642456578 @ay-kay/ios-keyboard-cache
 /*
  * iOS Keyboard Cache
  *

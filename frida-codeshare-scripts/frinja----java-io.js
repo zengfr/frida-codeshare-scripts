@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1790303779 @ninjadiary/frinja----java-io
 /*
 Author: secretdiary.ninja
 License: (CC BY-SA 4.0) 

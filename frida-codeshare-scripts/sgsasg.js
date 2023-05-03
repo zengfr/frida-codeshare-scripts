@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1172280059 @vumail159951/sgsasg
 Java.perform(function() {
     const System = Java.use('java.lang.System');
     const Runtime = Java.use('java.lang.Runtime');

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//67036603 @chepaika/ios-clicklog
 function interceptActionWithTarget(actionSelector, target) {
     console.log("\tSet hook on: " + target.$className + "." + actionSelector.readUtf8String() + "()")
     var impl = target.methodForSelector_(actionSelector)

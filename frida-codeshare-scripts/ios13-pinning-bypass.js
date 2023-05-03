@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-899360920 @federicodotta/ios13-pinning-bypass
 /* Description: iOS 13 SSL Bypass based on https://codeshare.frida.re/@machoreverser/ios12-ssl-bypass/ and https://github.com/nabla-c0d3/ssl-kill-switch2
  *  Author: @apps3c
  */

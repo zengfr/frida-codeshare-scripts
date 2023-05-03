@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1199886466 @mrmacete/objc-method-observer
 /*
  * To observe a single class by name:
  *     observeClass('NSString');

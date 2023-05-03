@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//190756445 @eitguide/rr
 Interceptor.attach(Module.findExportByName(null, "strcmp"), {
     onEnter: function(args) {
         if (args[0].isNull()) {

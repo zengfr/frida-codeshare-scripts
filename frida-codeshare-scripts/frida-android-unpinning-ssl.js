@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1254433576 @masbog/frida-android-unpinning-ssl
 /* 
    Android SSL Re-pinning frida script v0.1 @masbog 
    $ frida -U -f it.app.mobile -l frida-android-unpinning-ssl.js

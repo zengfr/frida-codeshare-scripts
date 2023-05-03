@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-51152661 @interference-security/show-ios-app-owned-classes
 //Credit: PassionFruit (https://github.com/chaitin/passionfruit/blob/master/agent/app/classdump.js)
 //Twitter: https://twitter.com/xploresec
 //GitHub: https://github.com/interference-security

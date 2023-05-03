@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1370406505 @mrmacete/substrate-unloader
 var dlopen = new NativeFunction(
     Module.findExportByName(null, 'dlopen'),
     'pointer', ['pointer', 'int']);

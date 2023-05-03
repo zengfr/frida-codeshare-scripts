@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//72143334 @ninjadiary/sqlite-database
 /*
 Author: secretdiary.ninja
 License: (CC BY-SA 4.0) 

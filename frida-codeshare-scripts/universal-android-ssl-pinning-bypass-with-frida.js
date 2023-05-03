@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//129233644 @pcipolloni/universal-android-ssl-pinning-bypass-with-frida
 /* 
    Android SSL Re-pinning frida script v0.2 030417-pier 
 

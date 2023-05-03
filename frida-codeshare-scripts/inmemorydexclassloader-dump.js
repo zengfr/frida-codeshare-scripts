@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1256020336 @cryptax/inmemorydexclassloader-dump
 'use strict';
 
 console.log("[*] In Memory Dex Dump v0.1 - @cryptax");

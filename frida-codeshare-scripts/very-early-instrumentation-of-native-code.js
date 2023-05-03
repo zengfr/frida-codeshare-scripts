@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//950898106 @P0r0/very-early-instrumentation-of-native-code
 var test = false;
 Interceptor.attach(Module.findExportByName("libc.so", "open"), {
     onEnter: function() {

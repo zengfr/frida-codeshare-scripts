@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//578622555 @nneonneo/android-okhttp3-logger
 Java.perform(function() {
     var OkHttpClient = Java.use("okhttp3.OkHttpClient");
     var RealCall = Java.use("okhttp3.RealCall");

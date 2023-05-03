@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1578678874 @helviojunior/okhttp-logging
 /*  Log all http/https requests and responses of okhttp
     by Helvio Junior (M4v3r1ck)
     GitHub: https://github.com/helviojunior/

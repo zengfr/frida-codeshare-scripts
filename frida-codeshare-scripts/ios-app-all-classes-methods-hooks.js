@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//2007396777 @interference-security/ios-app-all-classes-methods-hooks
 function get_timestamp()
 {
 var today = new Date();

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-79556905 @federicodotta/okhttp-hostname-verifier-bypass
 /* 
  *  Description: OkHttp Hostname Verifier bypass
  *  Authors:  @apps3c

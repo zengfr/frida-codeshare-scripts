@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//868493252 @Computershik73/ios-nsurl
 console.log('Listening For Requests...');
 
 if (ObjC.available) {

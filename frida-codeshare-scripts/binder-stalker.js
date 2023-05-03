@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-748911325 @lolicon/binder-stalker
 Java.perform(() => {
   const Log = Java.use('android.util.Log')
   const BinderProxy = Java.use('android.os.BinderProxy')

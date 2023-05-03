@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-2103513007 @salecharohit/instrumenting-native-android-functions-using-frida
 import frida
 import sys
 

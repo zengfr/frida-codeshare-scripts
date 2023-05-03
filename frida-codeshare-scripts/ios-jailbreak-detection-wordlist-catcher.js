@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-2112960502 @DevTraleski/ios-jailbreak-detection-wordlist-catcher
 if (ObjC.available) {
     try {
         //Hooking fileExistsAtPath:

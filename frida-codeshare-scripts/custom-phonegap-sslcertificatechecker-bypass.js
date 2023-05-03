@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1421946648 @gchib297/custom-phonegap-sslcertificatechecker-bypass
 /* Script start */
 
 Java.perform(function x() {

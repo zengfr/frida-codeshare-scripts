@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-455154755 @minacrissdev/mac-mojave-ssl-bypass
 var tls_helper_create_peer_trust;
 
 

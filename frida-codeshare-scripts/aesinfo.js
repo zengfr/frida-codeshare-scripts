@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1080522493 @dzonerzy/aesinfo
 Java.perform(function() {
 
     var use_single_byte = false;

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1861551159 @ax/universal-android-biometric-bypass
 /*
 Universal Android Biometric Bypass v0.4
 author: ax - github.com/ax

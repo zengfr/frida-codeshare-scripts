@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1668381158 @oleavr/ios-ssh-diagnostics
 const SSHD_PLIST = '/Library/LaunchDaemons/com.openssh.sshd.plist';
 
 const _popen = new NativeFunction(Module.getExportByName(null, 'popen'), 'pointer', ['pointer', 'pointer']);

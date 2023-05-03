@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-794915247 @khantsithu1998/bypass-react-native-emulator-detection
 /* 
    Bypass react-native-device-info emulator detection
    $ frida --codeshare khantsithu1998/bypass-react-native-emulator-detection -U -f <your-application-package-name>

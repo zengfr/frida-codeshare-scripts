@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//294157097 @pbalmelle/android-ssl-bypass
 Java.perform(function () {
 /* Invalidate the certificate pinner set up
     var httpClient = Java.use("okhttp3.OkHttpClient");

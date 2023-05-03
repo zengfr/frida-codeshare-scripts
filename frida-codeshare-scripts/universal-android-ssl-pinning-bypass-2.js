@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1155153502 @sowdust/universal-android-ssl-pinning-bypass-2
 /* 
    Universal Android SSL Pinning Bypass
    by Mattia Vinci and Maurizio Agazzini 

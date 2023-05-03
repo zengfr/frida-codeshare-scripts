@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1617171892 @interference-security/ios-app-static-analysis
 //Script for iOS app's static analysis
 //Author: Interference Security
 //Twitter: xploresec

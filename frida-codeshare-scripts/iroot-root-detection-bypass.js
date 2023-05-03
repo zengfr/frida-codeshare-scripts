@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//145281795 @JJK96/iroot-root-detection-bypass
 Java.perform(function() {
     var Root = Java.use("de.cyberkatze.iroot.IRoot");
     var PluginResult = Java.use("org.apache.cordova.PluginResult")

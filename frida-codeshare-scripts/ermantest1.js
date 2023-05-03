@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//884620364 @ermancanitatli/ermantest1
 setTimeout(function() {
     Java.perform(function() {
         console.log("");

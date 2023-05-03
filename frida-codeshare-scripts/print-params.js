@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1777650135 @InvictusNinja/print-params
 Interceptor.attach(Module.findExportByName("libhwui.so", "_ZN8SkBitmap14tryAllocPixelsEPNS_9AllocatorE"), {
     onEnter: function (args) {
         // var keySize = args[2].toInt32();

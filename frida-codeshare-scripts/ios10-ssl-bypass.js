@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-12884885 @dki/ios10-ssl-bypass
 // translation of https://github.com/nabla-c0d3/ssl-kill-switch2/blob/master/SSLKillSwitch/SSLKillSwitch.m for iOS 10/11
 
 var tls_helper_create_peer_trust;

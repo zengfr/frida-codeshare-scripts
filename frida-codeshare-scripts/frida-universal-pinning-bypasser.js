@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1101420930 @akabe1/frida-universal-pinning-bypasser
 /*  Another universal ssl certificate pinning bypass script for Android
     by Maurizio Siddu
     Run with:

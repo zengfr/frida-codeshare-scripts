@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1397992229 @dzervas/android-location-spoofing
 const lat = 27.9864882;
 const lng = 33.7279001;
 

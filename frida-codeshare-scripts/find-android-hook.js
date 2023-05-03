@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-692418356 @lichao890427/find-android-hook
 // https://codeshare.frida.re/@lichao890427/find-android-hook/edit
 // Any questions submit to https://github.com/lichao890427/frida_script 
 

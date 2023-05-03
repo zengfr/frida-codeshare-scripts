@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//982424298 @ceres-c/extract-keystore
 #!/usr/bin/python3
 
 '''

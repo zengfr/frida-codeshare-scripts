@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//2108790741 @mame82/android-tcp-trace
 /*
  * Frida script to trace TCP connections of Android apps by MaMe82
  * - based on libc.so!connect()

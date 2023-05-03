@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-493031532 @007panda/hookjavamaps
 function getStackTrace(){
     var Exception = Java.use("java.lang.Exception");
     var ins = Exception.$new("Exception");

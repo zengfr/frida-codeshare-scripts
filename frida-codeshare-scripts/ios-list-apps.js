@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//2048531307 @oleavr/ios-list-apps
 /*
  * Usage: frida -U -n itunesstored --codeshare oleavr/ios-list-apps
  *

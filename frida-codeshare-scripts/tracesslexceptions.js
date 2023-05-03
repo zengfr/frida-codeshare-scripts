@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-300436879 @zeroinside/tracesslexceptions
 /*
 A PoC Frida script to trace the android SSL exception constructors. Helps a lot with searching the code tree for the certificate pinning functions and exception sources.
 $ frida -U  -l trace_sslexceptions.js -f app.app.app

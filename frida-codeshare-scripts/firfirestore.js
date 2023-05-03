@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1698511102 @Mo7amedFouad/firfirestore
 var documentWithPath = ObjC.classes.FIRCollectionReference["- documentWithPath:"];
 var collectionWithPath = ObjC.classes.FIRFirestore["- collectionWithPath:"];
 

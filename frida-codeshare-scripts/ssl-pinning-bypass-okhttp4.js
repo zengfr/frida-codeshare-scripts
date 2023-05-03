@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-843843606 @kooroshh/ssl-pinning-bypass-okhttp4
 //adb push cert-der.crt /data/local/tmp/cert-der.crt
 //frida -U -f com.dummy.ssl --codeshare kooroshh/ssl-pinning-bypass-okhttp4 --no-pause
 Java.perform(function() {

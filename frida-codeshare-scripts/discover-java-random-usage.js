@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1483709372 @krue4954/discover-java-random-usage
 Java.perform(
     function() {
         var javaRandom = Java.use("java.util.Random");

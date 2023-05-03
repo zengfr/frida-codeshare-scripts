@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1521873440 @dzonerzy/fridantiroot
 /*
 Original author: Daniele Linguaglossa
 28/07/2021 -    Edited by Simone Quatrini

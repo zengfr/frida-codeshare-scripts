@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1476262186 @zionspike/bypass-developermode-check-android
 function bypass_developerMode_check() {
     var settingSecure = Java.use('android.provider.Settings$Secure');
     settingSecure.getInt.overload('android.content.ContentResolver', 'java.lang.String', 'int').implementation = function(cr, name, flag) {

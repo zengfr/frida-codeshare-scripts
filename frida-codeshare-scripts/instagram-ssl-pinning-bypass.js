@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1418921622 @Eltion/instagram-ssl-pinning-bypass
 //https://github.com/Eltion/Instagram-SSL-Pinning-Bypass
 
 'use strict'

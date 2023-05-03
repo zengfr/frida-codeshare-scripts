@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1422283040 @dzonerzy/hashinfo
 Java.perform(function() {
 
     var use_single_byte = false;

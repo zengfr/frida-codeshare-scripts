@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1772605991 @Numenorean/swiftstring
 console.log("[+] script started...")
 if (ObjC.available) {
     if (Process.isDebuggerAttached() === true) {

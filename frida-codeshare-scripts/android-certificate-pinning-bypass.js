@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1902146048 @segura2010/android-certificate-pinning-bypass
 Java.perform(function () {
 // Invalidate the certificate pinner set up
     var OkHttpClient = Java.use("com.squareup.okhttp.OkHttpClient");

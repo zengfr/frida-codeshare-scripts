@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1033556661 @zionspike/bypass-wi-fi-check-on-android
 function bypass_wifi_check() {
     var classx = Java.use("android.net.ConnectivityManager");
     var networkInfo = classx.getActiveNetworkInfo;

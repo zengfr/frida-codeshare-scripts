@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//550087659 @zionspike/bypass-flutter-pinning-ios
 function bypass_SecTrustEvaluates() {
     // Bypass SecTrustEvaluateWithError
     var SecTrustEvaluateWithErrorHandle = Module.findExportByName('Security', 'SecTrustEvaluateWithError');

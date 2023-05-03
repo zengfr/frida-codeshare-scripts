@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1849470511 @leolashkevych/ios-enable-webinspector
 /*
  * iOS Enable WebInspector
  * 

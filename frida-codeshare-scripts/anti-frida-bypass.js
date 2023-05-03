@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//799399861 @enovella/anti-frida-bypass
 Interceptor.attach(Module.findExportByName("libc.so", "strstr"), {
 
     onEnter: function(args) {

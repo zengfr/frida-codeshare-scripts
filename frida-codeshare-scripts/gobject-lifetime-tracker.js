@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1662295269 @oleavr/gobject-lifetime-tracker
 /*
  * E.g. to attach to a running GIMP:
  *

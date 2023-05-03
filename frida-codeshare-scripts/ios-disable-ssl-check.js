@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1972218842 @SYM01/ios-disable-ssl-check
 ObjC.schedule(ObjC.mainQueue, function() {
     var version = ObjC.classes.UIDevice.currentDevice().systemVersion().toString();
     var mainVersion = parseInt(version.split('.')[0]);

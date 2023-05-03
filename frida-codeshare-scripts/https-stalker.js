@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1782110778 @lolicon/https-stalker
 Java.perform(() => {
     const Log = Java.use('android.util.Log')
     const Exception = Java.use('java.lang.Exception')

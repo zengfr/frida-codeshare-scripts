@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1632874755 @BR92Bruno/teste4
 Java.perform(function() {
 
     console.log("teste1");

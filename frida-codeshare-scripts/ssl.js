@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1267175226 @workwhileweb/ssl
 /*
  * This script combines, fixes & extends a long list of other scripts, most notably including:
  *

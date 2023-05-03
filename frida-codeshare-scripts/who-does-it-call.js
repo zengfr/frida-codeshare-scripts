@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1414886825 @oleavr/who-does-it-call
 /*
  * To find out who the function at 0x1234 calls the next time it is called:
  *   start(ptr('0x1234'))

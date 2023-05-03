@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//303557466 @AkhileshCh/sslpinningmine
 setTimeout(function() {
     Java.perform(function() {
        

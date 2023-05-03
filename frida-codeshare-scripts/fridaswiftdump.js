@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-214841332 @neil-wu/fridaswiftdump
 /*
 
 FridaSwiftDump a Frida tool for retriving the Swift Object info from an running app. 

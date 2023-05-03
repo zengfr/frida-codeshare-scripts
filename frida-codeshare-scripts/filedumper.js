@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1275132226 @dzonerzy/filedumper
 Java.perform(function() {
     var openedfile = "";
     var data = {

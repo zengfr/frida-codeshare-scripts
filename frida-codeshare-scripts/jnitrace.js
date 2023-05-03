@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1755410704 @chame1eon/jnitrace
 /*
  * User guide and more details available here:
  * https://github.com/chame1eon/jnitrace

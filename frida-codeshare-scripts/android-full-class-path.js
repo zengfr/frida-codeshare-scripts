@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1596004930 @k7eon/android-full-class-path
 // u can change 'Headers' and 'okhttp' as u wish
 
 // example of output:

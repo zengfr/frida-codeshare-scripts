@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-724354080 @miromiro11/test-zza
 Java.perform(function () {
      // Get a reference to the ArrayList class
   var array_list = Java.use("java.util.ArrayList");

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1024221781 @ay-kay/ios-custom-keyboard-support
 function areThirdPartyKeyboardsAllowed() {
     var UIApplication = ObjC.classes.UIApplication.sharedApplication();
     var shouldAllowKeyboardExtension = true;

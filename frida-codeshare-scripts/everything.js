@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-948163967 @snooze6/everything
 // Are we debugging it?
 var DEBUG = false;
 

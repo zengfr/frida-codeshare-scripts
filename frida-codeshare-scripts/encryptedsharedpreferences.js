@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1674956817 @Alkeraithe/encryptedsharedpreferences
 // Nawaf Alkerithe 
 // https://github.com/Alkeraithe
 // Alkeraithe@gmail.com

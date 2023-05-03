@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1798893186 @dzonerzy/dereflector
 Java.perform(function() {
 
     //var internalClasses = []; // uncomment this if you want no filtering!

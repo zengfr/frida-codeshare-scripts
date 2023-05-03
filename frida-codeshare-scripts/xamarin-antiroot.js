@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1296833250 @Gand3lf/xamarin-antiroot
 /*
 This is a stand-alone script for bypassing anti-root detection on Android apps written using Xamarin.
 I don't know if it works with IOS, let me know.

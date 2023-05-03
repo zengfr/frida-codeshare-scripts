@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-810355028 @s1xtw03/ios-url-scheme-fuzzing-from-file
 /* 99% of this code stolen from github.com/dki
  * iOS URL Scheme Fuzzing, Read Fuzz List From File
  * Usage: frida -U --codeshare s1xtw03/ios-url-scheme-fuzzing-from-file SpringBoard

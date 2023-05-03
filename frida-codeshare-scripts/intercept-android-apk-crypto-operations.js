@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-29985094 @fadeevab/intercept-android-apk-crypto-operations
 function bin2ascii(array) {
     var result = [];
 

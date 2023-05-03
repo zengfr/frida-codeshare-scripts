@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1031527766 @ispiropoulos/root-and-ssl-bypass
 Java.perform(function() {
     // var surface_view = Java.use('android.view.SurfaceView');
 

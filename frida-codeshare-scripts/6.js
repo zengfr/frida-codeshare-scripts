@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-261375154 @Malfarion/6
 function hook_okhttp3() {
      Java.perform(function() {
         var ByteString = Java.use("com.android.okhttp.okio.ByteString");

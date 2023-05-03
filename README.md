@@ -14,12 +14,19 @@ A curated list of Frida resources.
 - https://gitlab.com/roxanagogonea/frida-scripts
 - https://github.com/davuxcom/frida-scripts
 - https://gitlab.com/roxanagogonea/frida-scripts
+- https://github.com/Ch0pin/medusa/tree/master/modules/http_comnunications
+- https://github.com/themalwarenews/frida_rootandsslbypass
+- https://github.com/maximebories/Frida-Request
+- https://github.com/asmjmp0/fridaMemoryAccessTrace
+- https://github.com/apkunpacker/FridaScripts/tree/main
 ### powered by Frida
 - https://github.com/frida/aurora  Web app built on top of Frida
 - https://github.com/frida/cloudspy Web app built on top of Frida
 - https://github.com/dpnishant/appmon  Runtime Security Testing Framework for iOS, Mac OS X and Android Apps
 - https://github.com/nccgroup/house  A runtime mobile application analysis toolkit with a Web GUI, powered by Frida
 - https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security A powerful web interface that helps you to manipulate Android and iOS
+- https://github.com/FrenchYeti/dexcalibur Dexcalibur is an Android reverse engineering platform focus on instrumentation automation
+- https://github.com/cryptax/androidre/ 3 docker images for the reverse engineering of Android applications
 
 ### ida somethings
 #### ida database

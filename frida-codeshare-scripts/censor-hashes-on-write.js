@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//415796602 @juliusdeane/censor-hashes-on-write
 // PLATFORM: libc based (Linux, *ix).
 //[Usage] frida --codeshare juliusdeane/censor-hashes-on-write <your binary>
 

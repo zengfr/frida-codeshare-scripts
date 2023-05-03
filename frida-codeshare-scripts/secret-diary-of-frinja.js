@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1999644009 @ninjadiary/secret-diary-of-frinja
 // Git: https://github.com/ninjadiary/Secret_Diary_of_FrinJa
 
 /*

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1768606313 @TheDauntless/disable-flutter-tls-v1
 /**
 
 A Frida script that disables Flutter's TLS verification

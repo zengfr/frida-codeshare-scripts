@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1475345776 @dki/find-ios-app-by-display-name
 'use strict';
 
 // usage: frida -U --codeshare dki/find-ios-app-by-display-name Springboard

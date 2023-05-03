@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-608405739 @gameFace22/cordova---enable-webview-debugging
 // Usage : frida -U -f bundle_id -l enable_debug.js --no-pause 
 // Blog link to be added 
 // Written by @67616d654661636 and @sunnyrockzzs

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-271783289 @krapgras/android-biometric-bypass-update-android-10-pixel-3xl-emulator
 /*
     Fingerprint bypass via Exception Handling.
     We assume that application use CryptoObject to perform some crypto stuff in the onAuthenticationSucceeded only to confirm that fingerprint authentication (e.g. all data is encrypted using key other than this from fingerprint ).

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-391654105 @dzonerzy/whereisnative
 Java.perform(function() {
 
     var SystemDef = Java.use('java.lang.System');

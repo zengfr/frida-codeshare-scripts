@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//415565429 @Raghav-Gupta99/test19-7-1
 // $ frida -l antiroot.js -U -f com.example.app --no-pause
 // CHANGELOG by Pichaya Morimoto (p.morimoto@sth.sh): 
 //  - I added extra whitelisted items to deal with the latest versions 

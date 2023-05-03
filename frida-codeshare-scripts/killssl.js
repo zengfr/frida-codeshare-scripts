@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1069017775 @SYM01/killssl
 setImmediate(function() {
     var FBLigerConfig = ObjC.classes.FBLigerConfig;
     console.log(FBLigerConfig);

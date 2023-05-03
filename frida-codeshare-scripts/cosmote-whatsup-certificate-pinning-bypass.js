@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1308807581 @stavros0/cosmote-whatsup-certificate-pinning-bypass
 /* 
    Bypassing certificate pinning in COSMOTE What's Up 4.7.1 (Android 9)
    Made with love by Stavros Mekesis (https://suumcuique.org)

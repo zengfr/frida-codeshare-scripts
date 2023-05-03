@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-2019094961 @Fitblip/hello-world
 console.log(' /$$   /$$           /$$ /$$                 /$$      /$$                     /$$       /$$ /$$');
 console.log('| $$  | $$          | $$| $$                | $$  /$ | $$                    | $$      | $$| $$');
 console.log('| $$  | $$  /$$$$$$ | $$| $$  /$$$$$$       | $$ /$$$| $$  /$$$$$$   /$$$$$$ | $$  /$$$$$$$| $$');

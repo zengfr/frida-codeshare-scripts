@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1780135977 @vumail159951/fgdgd
 /*  Android ssl certificate pinning bypass script for various methods
 by Maurizio Siddu
 

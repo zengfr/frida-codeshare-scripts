@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//315000327 @platix/print-android-logs-in-console
 Java.perform(function() {
     var Log = Java.use("android.util.Log");
     Log.d.overload('java.lang.String', 'java.lang.String', 'java.lang.Throwable').implementation = function(a, b, c) {

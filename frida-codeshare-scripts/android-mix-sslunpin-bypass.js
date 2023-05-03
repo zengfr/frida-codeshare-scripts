@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1848830396 @incogbyte/android-mix-sslunpin-bypass
 console.log("[*] SSL Pinning mix Bypasses");
 console.log(`[*] Your frida version: ${Frida.version}`);
 console.log(`[*] Your script runtime: ${Script.runtime}`);

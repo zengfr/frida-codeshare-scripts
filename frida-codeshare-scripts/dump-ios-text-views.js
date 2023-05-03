@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1849606965 @dki/dump-ios-text-views
 'use strict';
 
 /* small script to dump UITextField and UITextView attributes for a view

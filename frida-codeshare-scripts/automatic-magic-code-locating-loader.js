@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1599300893 @iDone/automatic-magic-code-locating-loader
 // Created by B.S. 
 console.warn("\nFrida.version= " + Frida.version);
 console.warn("Process.arch= " + Process.arch);

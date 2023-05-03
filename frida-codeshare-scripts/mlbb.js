@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1799658334 @GDTNguyen/mlbb
 function startTLSKeyLogger(SSL_CTX_new, SSL_CTX_set_keylog_callback) {
     function keyLogger(ssl, line) {
         console.log(new NativePointer(line).readCString());

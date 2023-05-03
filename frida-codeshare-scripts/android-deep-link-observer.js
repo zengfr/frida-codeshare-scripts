@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1441511277 @leolashkevych/android-deep-link-observer
 Java.perform(function() {
     var Intent = Java.use("android.content.Intent");
     Intent.getData.implementation = function() {

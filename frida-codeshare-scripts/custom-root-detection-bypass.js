@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1005028785 @gchib297/custom-root-detection-bypass
 /* IMPORTANT - Edit class names before using this script */
 
 console.log("Script loaded successfully ");

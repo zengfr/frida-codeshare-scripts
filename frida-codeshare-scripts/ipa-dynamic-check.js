@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1157394285 @0x79H/ipa-dynamic-check
 // 这个脚本是在seclover工作时整合的; blog: https://blog.qwerdf.com/ 
 // source: https://gist.github.com/0x79H/0b4c1909d37ea8377664eac107bb93be
 

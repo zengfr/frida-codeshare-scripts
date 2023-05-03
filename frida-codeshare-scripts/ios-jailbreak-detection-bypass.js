@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1142764457 @liangxiaoyi1024/ios-jailbreak-detection-bypass
 if (ObjC.available) {
     var paths = [
         "/Applications/blackra1n.app",

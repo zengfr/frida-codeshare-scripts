@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//494167519 @vutranHS/sd
 setTimeout(function() {
     Java.perform(function() {
         console.log('')

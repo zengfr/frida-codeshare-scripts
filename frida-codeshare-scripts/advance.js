@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1752233496 @AnonymousVip/advance
 Java.perform(function() {
     let cuf = Java.use("bc.cuf");
     cuf.a.overload('[B', '[B').implementation = function(bArr, bArr2) {

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//2037679868 @maltek/generate-c-header-for-swift-data-types
 #!/usr/bin/env python3
 
 import json

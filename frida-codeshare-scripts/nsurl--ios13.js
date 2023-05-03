@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1037111912 @DuffyAPP-IT/nsurl--ios13
 console.log('Listening For Requests...');
 
 if (ObjC.available) {

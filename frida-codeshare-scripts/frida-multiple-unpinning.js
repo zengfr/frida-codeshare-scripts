@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-702870032 @akabe1/frida-multiple-unpinning
 /*  Android ssl certificate pinning bypass script for various methods
 by Maurizio Siddu
 

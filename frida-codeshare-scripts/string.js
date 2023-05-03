@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//658473834 @vumail159951/string
 function hookOverloads(className, func) {
   var clazz = Java.use(className);
   var overloads = clazz[func].overloads;

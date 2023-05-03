@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1720888382 @Tindam/test2
 setTimeout(function(){
     Java.perform(function (){
     console.log("");

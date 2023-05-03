@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1665705242 @vumail159951/he
 Java.perform(function() {
    const StringBuilder = Java.use('java.lang.StringBuilder');
    StringBuilder.toString.implementation = function() {

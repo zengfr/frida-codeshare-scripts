@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-407941760 @zionspike/bypass-wi-fi-check-on-flutter-based-ios
 // e.g. bypass_connectivity_plus_byHookSearch("exports:connectivity_plus!*current*Type*");
 function bypass_connectivity_plus_byHookSearch(searchstring) {
     var type = "module";

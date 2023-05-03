@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-6928544 @lateralusd/cccrypt
 var operation = {
     0: "kCCEncrypt",
     1: "kCCDecrypt"

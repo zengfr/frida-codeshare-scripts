@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1600809922 @Eltion/tiktok-ssl-pinning-bypass
 //https://github.com/Eltion/Tiktok-SSL-Pinning-Bypass
 function waitForModule(moduleName) {
     return new Promise(resolve => {

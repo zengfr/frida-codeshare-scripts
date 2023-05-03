@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//517407478 @d3z3n0v3/trace-function-calls
 /*
     About:
         Script for dynamically tracing Java function calls within a given package.

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//2001985188 @mongolito12345/networking-native
 console.log("Loading script...");
 /*
 Author: https://gist.github.com/zihadmahiuddin

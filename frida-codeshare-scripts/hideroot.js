@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//1546388760 @apkunpacker/hideroot
 /*
 Created By @ApkUnpacke
 https://github.com/apkunpacker/Root_Bypass

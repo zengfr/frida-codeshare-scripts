@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-1503241497 @stek29/launchd-xpc-hack
 /*
     libxpc is broken in launchd itself, so we have to fix it up manually
     first of all, bootstrap port is needed. there probably is a nicier way to do this,

@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-80948124 @Numenorean/ios-instagram-facebook-ssl-pinning-bypass
 var func_location_patterns = [
     ["A2 02 02 91 A3 12 44 A9 A6 C2 04 91 A5 1A 40 F9 E0 03 14 AA E1 03 13 AA ?? ?? ?? ?? F3 03 00 AA", 24],
     ["9F 02 00 71 E8 07 9F 1A 02 0C 40 A9 04 14 41 A9 06 10 40 F9 E0 03 08 AA E1 03 13 AA ?? ?? ?? ?? FD 7B 42 A9 F4 4F 41 A9 FF C3 00 91 C0 03 5F D6", 28],

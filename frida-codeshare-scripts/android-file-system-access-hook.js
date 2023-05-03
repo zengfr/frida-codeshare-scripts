@@ -1,3 +1,6 @@
+
+//https://github.com/zengfr/frida-codeshare-scripts
+//-15998984 @FrenchYeti/android-file-system-access-hook
 /**
 It should be launch earlier in order to be aware of a maximun 
 quantity of file descriptors.
