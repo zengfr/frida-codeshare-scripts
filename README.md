@@ -1,10 +1,15 @@
 # frida-codeshare-scripts
 frida-codeshare-scripts.collection of useful FRIDA scripts.
-A curated list of Frida resources.
+A curated list of Frida resources.纯实用脚本收集,脚本全网最全.
 ### frida
 - https://frida.re/
 - https://github.com/frida/frida
 
+### contact group
+- qq group: 1群 143824179 (IDA专业汇编逆向分析&游戏&辅助)
+- qq group: 2群 26318788 (romhacking)
+### video
+- [https://www.bilibili.com/video/BV1BQ4y1w7pS/](https://www.bilibili.com/video/BV1BQ4y1w7pS/) frida定制
 ### frida-scripts
 - https://github.com/zengfr/frida-codeshare-scripts
 - https://github.com/dweinstein/awesome-frida
@@ -19,6 +24,9 @@ A curated list of Frida resources.
 - https://github.com/maximebories/Frida-Request
 - https://github.com/asmjmp0/fridaMemoryAccessTrace
 - https://github.com/apkunpacker/FridaScripts/tree/main
+- https://github.com/jbro129/android-modding
+- https://github.com/noobpk/frida-ios-hook
+- https://github.com/5l1v3r1/frida_script/blob/main/so/utils.js
 ### powered by Frida
 - https://github.com/frida/aurora  Web app built on top of Frida
 - https://github.com/frida/cloudspy Web app built on top of Frida

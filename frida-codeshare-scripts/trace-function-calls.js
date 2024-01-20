@@ -30,7 +30,7 @@
 */
 
 var config = {
-    package: 'com.example.app',
+    package: 'cn.jj',
     printSummary: true,
     printDefinition: true,
     printArgs: true,
