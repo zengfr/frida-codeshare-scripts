@@ -1,6 +1,6 @@
 
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:1755635918 @Hyupai/teste2
+//hash:-1928722049 @Hyupai/teste2
 Java.perform(function() {
 
     console.log('\n-----Log4j check by @Ch0pin-----------------\n');
@@ -54,11 +54,11 @@ Java.perform(function() {
 
         console.log("Payload: " + payl0ad);
 
-        systemProperties.get.overload('java.lang.String').implementation = function(key) {
+        /*systemProperties.get.overload('java.lang.String').implementation = function(key) {
             var originalValue = this.get(key);
             console.log('[+] Get system properties called using key: ' + key + ', original value: ' + originalValue + ', returning ' + payl0ad);
             return payl0ad;
-        };
+        };*/
 
         build.getSerial.implementation = function() {
             var originalSerial = this.getSerial();
@@ -144,7 +144,7 @@ Java.perform(function() {
             return payl0ad;
         };
 
-        contentResolver.query.overload('android.net.Uri', '[Ljava.lang.String;', 'android.os.Bundle', 'android.os.CancellationSignal').implementation = function(uri, str, bundle, sig) {
+        /*contentResolver.query.overload('android.net.Uri', '[Ljava.lang.String;', 'android.os.Bundle', 'android.os.CancellationSignal').implementation = function(uri, str, bundle, sig) {
             if (uri == 'content://com.google.android.gsf.gservicesa') {
                 console.log('[+] Cloaking Google Services Framework Identifier Query, returning null');
                 return null;
@@ -165,6 +165,7 @@ Java.perform(function() {
                 return payl0ad;
             }
         };
+        */
 
         contentResolver.query.overload('android.net.Uri', '[Ljava.lang.String;', 'java.lang.String', '[Ljava.lang.String;', 'java.lang.String', 'android.os.CancellationSignal').implementation = function(uri, astr, bstr, cstr, sig) {
             if (uri == 'content://com.google.android.gsf.gservicesa') {
@@ -190,4 +191,4 @@ Java.perform(function() {
     }
 });
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:1755635918 @Hyupai/teste2
+//hash:-1928722049 @Hyupai/teste2

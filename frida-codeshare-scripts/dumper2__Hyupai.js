@@ -1,29 +1,25 @@
 
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:1116959250 @Hyupai/dumper2
-Java.perform(function() {
+//hash:-7609723 @Hyupai/dumper2
+Java.perform(function () {
+    var PackageManager = Java.use('android.content.pm.PackageManager');
+    console.log("Hookeando hasSystemFeature...");
 
-    console.log('\n----------- Métodos de Identificação On Pix -----------\n');
-    
-    try {
+    // Usando a sobrecarga correta: (java.lang.String)
+    PackageManager.hasSystemFeature.overload('java.lang.String').implementation = function(feature) {
+        console.log("Feature verificada: " + feature);
+        return this.hasSystemFeature(feature);
+    };
 
-        var build = Java.use('android.os.Build');
-
-         var imei = "426333952357896";
-        var android_id = "1eo5u4gi65djem0l";
-        var line1Number = "+5511987654321";  // Número fictício realista
-        var subscriberId = "775986991242497";
-        var deviceId = "330128305757159";
-        var simOperator = "72410";  // MCC e MNC para o Brasil
-        var macAddress = "C4:8C:8F:4D:3D:AB";  // Endereço MAC fictício
-        var ssid = "SAMSUNG_WIFI";  // SSID fictício realista
-        var bssid = "C4:8C:8F:4D:3D:AB";  // Endereço BSSID fictício
-        
-        // Modificar propriedades da classe Build
-        build.MODEL.value = 'SM-G991B';
-        build.DEVICE.value = 'o1q';
-        build.BOARD.value = 'exynos2100';
-        build.PRODUCT.value = 'o1quew';
+    // Se precisar hookear a segunda sobrecarga, use a assinatura (java.lang.String, int):
+    PackageManager.hasSystemFeature.overload('java.lang.String', 'int').implementation = function(feature, version) {
+        console.log("Feature verificada: " + feature + ", Versão: " + version);
+        return this.hasSystemFeature(feature, version);
+    };
+});
+//https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
+//hash:-7609723 @Hyupai/dumper2
+       build.PRODUCT.value = 'o1quew';
         build.HARDWARE.value = 'exynos2100';
         build.FINGERPRINT.value = 'samsung/o1quew/o1q:12/SP1A.210812.016/G991BXXU3AVH1:user/release-keys';
         build.MANUFACTURER.value = 'samsung';
