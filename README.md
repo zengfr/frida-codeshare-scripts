@@ -1,5 +1,5 @@
 # frida-codeshare-scripts
-纯实用frida脚本收集,脚本全网最全.frida-codeshare-scripts.collection of useful FRIDA scripts.A curated list of Frida resources.
+纯实用frida脚本收集,脚本全网最全.不定时同步更新.frida-codeshare-scripts.collection of useful FRIDA scripts.A curated list of Frida resources.
 Please follow me first, and I will continue to update it in the future.
 ### frida
 - https://frida.re/
@@ -8,6 +8,14 @@ Please follow me first, and I will continue to update it in the future.
 ### contact group
 - qq group: 1群 143824179 (IDA专业汇编逆向分析&游戏&辅助)
 - qq group: 2群 26318788 (romhacking)
+
+### wechat group
+- add v: youandme10086 , to join wechat group for ai 微信群.
+
+|wechat|wechat-group|
+|------|----------|
+|![wechat](https://gitee.com/zengfr/n8n-workflow-all-templates/raw/main/img/1wechat.jpg)|![wechat-group](https://gitee.com/zengfr/n8n-workflow-all-templates/raw/main/img/2wechat-group.jpg)|
+
 ### video
 - [https://www.bilibili.com/video/BV1BQ4y1w7pS/](https://www.bilibili.com/video/BV1BQ4y1w7pS/) frida定制
 ### frida-scripts

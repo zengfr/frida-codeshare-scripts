@@ -1,11 +1,392 @@
 
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:-709320614 @akabe1/frida-multiple-unpinning
+//hash:-1086918033 @Raghav-Gupta99/test-1
+// $ frida -l universal_root_ssl_bypass.js -U -f com.example.app --no-pause
+// CHANGELOG by Pichaya Morimoto (p.morimoto@sth.sh): 
+//  - I added extra whitelisted items to deal with the latest versions 
+//                      of RootBeer/Cordova iRoot as of August 6, 2019
+//  - The original one just fucked up (kill itself) if Magisk is installed lol
+// Credit & Originally written by: https://codeshare.frida.re/@dzonerzy/fridantiroot/
+// If this isn't working in the future, check console logs, rootbeer src, or libtool-checker.so
+Java.perform(function() {
+
+    var RootPackages = ["com.noshufou.android.su", "com.noshufou.android.su.elite", "eu.chainfire.supersu",
+        "com.koushikdutta.superuser", "com.thirdparty.superuser", "com.yellowes.su", "com.koushikdutta.rommanager",
+        "com.koushikdutta.rommanager.license", "com.dimonvideo.luckypatcher", "com.chelpus.lackypatch",
+        "com.ramdroid.appquarantine", "com.ramdroid.appquarantinepro", "com.devadvance.rootcloak", "com.devadvance.rootcloakplus",
+        "de.robv.android.xposed.installer", "com.saurik.substrate", "com.zachspong.temprootremovejb", "com.amphoras.hidemyroot",
+        "com.amphoras.hidemyrootadfree", "com.formyhm.hiderootPremium", "com.formyhm.hideroot", "me.phh.superuser",
+        "eu.chainfire.supersu.pro", "com.kingouser.com", "com.android.vending.billing.InAppBillingService.COIN","com.topjohnwu.magisk"
+    ];
+
+    var RootBinaries = ["su", "busybox", "supersu", "Superuser.apk", "KingoUser.apk", "SuperSu.apk","magisk"];
+
+    var RootProperties = {
+        "ro.build.selinux": "1",
+        "ro.debuggable": "0",
+        "service.adb.root": "0",
+        "ro.secure": "1"
+    };
+
+    var RootPropertiesKeys = [];
+
+    for (var k in RootProperties) RootPropertiesKeys.push(k);
+
+    var PackageManager = Java.use("android.app.ApplicationPackageManager");
+
+    var Runtime = Java.use('java.lang.Runtime');
+
+    var NativeFile = Java.use('java.io.File');
+
+    var String = Java.use('java.lang.String');
+
+    var SystemProperties = Java.use('android.os.SystemProperties');
+
+    var BufferedReader = Java.use('java.io.BufferedReader');
+
+    var ProcessBuilder = Java.use('java.lang.ProcessBuilder');
+
+    var StringBuffer = Java.use('java.lang.StringBuffer');
+
+    var loaded_classes = Java.enumerateLoadedClassesSync();
+
+    send("Loaded " + loaded_classes.length + " classes!");
+
+    var useKeyInfo = false;
+
+    var useProcessManager = false;
+
+    send("loaded: " + loaded_classes.indexOf('java.lang.ProcessManager'));
+
+    if (loaded_classes.indexOf('java.lang.ProcessManager') != -1) {
+        try {
+            //useProcessManager = true;
+            //var ProcessManager = Java.use('java.lang.ProcessManager');
+        } catch (err) {
+            send("ProcessManager Hook failed: " + err);
+        }
+    } else {
+        send("ProcessManager hook not loaded");
+    }
+
+    var KeyInfo = null;
+
+    if (loaded_classes.indexOf('android.security.keystore.KeyInfo') != -1) {
+        try {
+            //useKeyInfo = true;
+            //var KeyInfo = Java.use('android.security.keystore.KeyInfo');
+        } catch (err) {
+            send("KeyInfo Hook failed: " + err);
+        }
+    } else {
+        send("KeyInfo hook not loaded");
+    }
+
+    PackageManager.getPackageInfo.overload('java.lang.String', 'int').implementation = function(pname, flags) {
+        var shouldFakePackage = (RootPackages.indexOf(pname) > -1);
+        if (shouldFakePackage) {
+            send("Bypass root check for package: " + pname);
+            pname = "set.package.name.to.a.fake.one.so.we.can.bypass.it";
+        }
+        return this.getPackageInfo.call(this, pname, flags);
+    };
+
+    NativeFile.exists.implementation = function() {
+        var name = NativeFile.getName.call(this);
+        var shouldFakeReturn = (RootBinaries.indexOf(name) > -1);
+        if (shouldFakeReturn) {
+            send("Bypass return value for binary: " + name);
+            return false;
+        } else {
+            return this.exists.call(this);
+        }
+    };
+
+    var exec = Runtime.exec.overload('[Ljava.lang.String;');
+    var exec1 = Runtime.exec.overload('java.lang.String');
+    var exec2 = Runtime.exec.overload('java.lang.String', '[Ljava.lang.String;');
+    var exec3 = Runtime.exec.overload('[Ljava.lang.String;', '[Ljava.lang.String;');
+    var exec4 = Runtime.exec.overload('[Ljava.lang.String;', '[Ljava.lang.String;', 'java.io.File');
+    var exec5 = Runtime.exec.overload('java.lang.String', '[Ljava.lang.String;', 'java.io.File');
+
+    exec5.implementation = function(cmd, env, dir) {
+        if (cmd.indexOf("getprop") != -1 || cmd == "mount" || cmd.indexOf("build.prop") != -1 || cmd == "id" || cmd == "sh") {
+            var fakeCmd = "grep";
+            send("Bypass " + cmd + " command");
+            return exec1.call(this, fakeCmd);
+        }
+        if (cmd == "su") {
+            var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
+            send("Bypass " + cmd + " command");
+            return exec1.call(this, fakeCmd);
+        }
+        if (cmd == "which") {
+            var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
+            send("Bypass which command");
+            return exec1.call(this, fakeCmd);
+        }
+        return exec5.call(this, cmd, env, dir);
+    };
+
+    exec4.implementation = function(cmdarr, env, file) {
+        for (var i = 0; i < cmdarr.length; i = i + 1) {
+            var tmp_cmd = cmdarr[i];
+            if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id" || tmp_cmd == "sh") {
+                var fakeCmd = "grep";
+                send("Bypass " + cmdarr + " command");
+                return exec1.call(this, fakeCmd);
+            }
+
+            if (tmp_cmd == "su") {
+                var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
+                send("Bypass " + cmdarr + " command");
+                return exec1.call(this, fakeCmd);
+            }
+        }
+        return exec4.call(this, cmdarr, env, file);
+    };
+
+    exec3.implementation = function(cmdarr, envp) {
+        for (var i = 0; i < cmdarr.length; i = i + 1) {
+            var tmp_cmd = cmdarr[i];
+            if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id" || tmp_cmd == "sh") {
+                var fakeCmd = "grep";
+                send("Bypass " + cmdarr + " command");
+                return exec1.call(this, fakeCmd);
+            }
+
+            if (tmp_cmd == "su") {
+                var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
+                send("Bypass " + cmdarr + " command");
+                return exec1.call(this, fakeCmd);
+            }
+        }
+        return exec3.call(this, cmdarr, envp);
+    };
+
+    exec2.implementation = function(cmd, env) {
+        if (cmd.indexOf("getprop") != -1 || cmd == "mount" || cmd.indexOf("build.prop") != -1 || cmd == "id" || cmd == "sh") {
+            var fakeCmd = "grep";
+            send("Bypass " + cmd + " command");
+            return exec1.call(this, fakeCmd);
+        }
+        if (cmd == "su") {
+            var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
+            send("Bypass " + cmd + " command");
+            return exec1.call(this, fakeCmd);
+        }
+        return exec2.call(this, cmd, env);
+    };
+
+    exec.implementation = function(cmd) {
+        for (var i = 0; i < cmd.length; i = i + 1) {
+            var tmp_cmd = cmd[i];
+            if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id" || tmp_cmd == "sh") {
+                var fakeCmd = "grep";
+                send("Bypass " + cmd + " command");
+                return exec1.call(this, fakeCmd);
+            }
+
+            if (tmp_cmd == "su") {
+                var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
+                send("Bypass " + cmd + " command");
+                return exec1.call(this, fakeCmd);
+            }
+        }
+
+        return exec.call(this, cmd);
+    };
+
+    exec1.implementation = function(cmd) {
+        if (cmd.indexOf("getprop") != -1 || cmd == "mount" || cmd.indexOf("build.prop") != -1 || cmd == "id" || cmd == "sh") {
+            var fakeCmd = "grep";
+            send("Bypass " + cmd + " command");
+            return exec1.call(this, fakeCmd);
+        }
+        if (cmd == "su") {
+            var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
+            send("Bypass " + cmd + " command");
+            return exec1.call(this, fakeCmd);
+        }
+        return exec1.call(this, cmd);
+    };
+
+    String.contains.implementation = function(name) {
+        if (name == "test-keys") {
+            send("Bypass test-keys check");
+            return false;
+        }
+        return this.contains.call(this, name);
+    };
+
+    var get = SystemProperties.get.overload('java.lang.String');
+
+    get.implementation = function(name) {
+        if (RootPropertiesKeys.indexOf(name) != -1) {
+            send("Bypass " + name);
+            return RootProperties[name];
+        }
+        return this.get.call(this, name);
+    };
+
+    Interceptor.attach(Module.findExportByName("libc.so", "fopen"), {
+        onEnter: function(args) {
+            var path1 = Memory.readCString(args[0]);
+            var path = path1.split("/");
+            var executable = path[path.length - 1];
+            var shouldFakeReturn = (RootBinaries.indexOf(executable) > -1)
+            if (shouldFakeReturn) {
+                Memory.writeUtf8String(args[0], "/ggezxxx");
+                send("Bypass native fopen >> "+path1);
+            }
+        },
+        onLeave: function(retval) {
+
+        }
+    });
+
+    Interceptor.attach(Module.findExportByName("libc.so", "fopen"), {
+        onEnter: function(args) {
+            var path1 = Memory.readCString(args[0]);
+            var path = path1.split("/");
+            var executable = path[path.length - 1];
+            var shouldFakeReturn = (RootBinaries.indexOf(executable) > -1)
+            if (shouldFakeReturn) {
+                Memory.writeUtf8String(args[0], "/ggezxxx");
+                send("Bypass native fopen >> "+path1);
+            }
+        },
+        onLeave: function(retval) {
+
+        }
+    });
+
+    Interceptor.attach(Module.findExportByName("libc.so", "system"), {
+        onEnter: function(args) {
+            var cmd = Memory.readCString(args[0]);
+            send("SYSTEM CMD: " + cmd);
+            if (cmd.indexOf("getprop") != -1 || cmd == "mount" || cmd.indexOf("build.prop") != -1 || cmd == "id") {
+                send("Bypass native system: " + cmd);
+                Memory.writeUtf8String(args[0], "grep");
+            }
+            if (cmd == "su") {
+                send("Bypass native system: " + cmd);
+                Memory.writeUtf8String(args[0], "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled");
+            }
+        },
+        onLeave: function(retval) {
+
+        }
+    });
+
+    /*
+
+    TO IMPLEMENT:
+
+    Exec Family
+
+    int execl(const char *path, const char *arg0, ..., const char *argn, (char *)0);
+    int execle(const char *path, const char *arg0, ..., const char *argn, (char *)0, char *const envp[]);
+    int execlp(const char *file, const char *arg0, ..., const char *argn, (char *)0);
+    int execlpe(const char *file, const char *arg0, ..., const char *argn, (char *)0, char *const envp[]);
+    int execv(const char *path, char *const argv[]);
+    int execve(const char *path, char *const argv[], char *const envp[]);
+    int execvp(const char *file, char *const argv[]);
+    int execvpe(const char *file, char *const argv[], char *const envp[]);
+
+    */
+
+
+    BufferedReader.readLine.overload().implementation = function() {
+        var text = this.readLine.call(this);
+        if (text === null) {
+            // just pass , i know it's ugly as hell but test != null won't work :(
+        } else {
+            var shouldFakeRead = (text.indexOf("ro.build.tags=test-keys") > -1);
+            if (shouldFakeRead) {
+                send("Bypass build.prop file read");
+                text = text.replace("ro.build.tags=test-keys", "ro.build.tags=release-keys");
+            }
+        }
+        return text;
+    };
+
+    var executeCommand = ProcessBuilder.command.overload('java.util.List');
+
+    ProcessBuilder.start.implementation = function() {
+        var cmd = this.command.call(this);
+        var shouldModifyCommand = false;
+        for (var i = 0; i < cmd.size(); i = i + 1) {
+            var tmp_cmd = cmd.get(i).toString();
+            if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd.indexOf("mount") != -1 || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd.indexOf("id") != -1) {
+                shouldModifyCommand = true;
+            }
+        }
+        if (shouldModifyCommand) {
+            send("Bypass ProcessBuilder " + cmd);
+            this.command.call(this, ["grep"]);
+            return this.start.call(this);
+        }
+        if (cmd.indexOf("su") != -1) {
+            send("Bypass ProcessBuilder " + cmd);
+            this.command.call(this, ["justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled"]);
+            return this.start.call(this);
+        }
+
+        return this.start.call(this);
+    };
+
+    if (useProcessManager) {
+        var ProcManExec = ProcessManager.exec.overload('[Ljava.lang.String;', '[Ljava.lang.String;', 'java.io.File', 'boolean');
+        var ProcManExecVariant = ProcessManager.exec.overload('[Ljava.lang.String;', '[Ljava.lang.String;', 'java.lang.String', 'java.io.FileDescriptor', 'java.io.FileDescriptor', 'java.io.FileDescriptor', 'boolean');
+
+        ProcManExec.implementation = function(cmd, env, workdir, redirectstderr) {
+            var fake_cmd = cmd;
+            for (var i = 0; i < cmd.length; i = i + 1) {
+                var tmp_cmd = cmd[i];
+                if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id") {
+                    var fake_cmd = ["grep"];
+                    send("Bypass " + cmdarr + " command");
+                }
+
+                if (tmp_cmd == "su") {
+                    var fake_cmd = ["justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled"];
+                    send("Bypass " + cmdarr + " command");
+                }
+            }
+            return ProcManExec.call(this, fake_cmd, env, workdir, redirectstderr);
+        };
+
+        ProcManExecVariant.implementation = function(cmd, env, directory, stdin, stdout, stderr, redirect) {
+            var fake_cmd = cmd;
+            for (var i = 0; i < cmd.length; i = i + 1) {
+                var tmp_cmd = cmd[i];
+                if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id") {
+                    var fake_cmd = ["grep"];
+                    send("Bypass " + cmdarr + " command");
+                }
+
+                if (tmp_cmd == "su") {
+                    var fake_cmd = ["justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled"];
+                    send("Bypass " + cmdarr + " command");
+                }
+            }
+            return ProcManExecVariant.call(this, fake_cmd, env, directory, stdin, stdout, stderr, redirect);
+        };
+    }
+
+    if (useKeyInfo) {
+        KeyInfo.isInsideSecureHardware.implementation = function() {
+            send("Bypass isInsideSecureHardware");
+            return true;
+        }
+    }
+
 /*  Android ssl certificate pinning bypass script for various methods
 by Maurizio Siddu
 
 Run with:
-frida -U -f <APP_ID> -l frida_multiple_unpinning.js [--no-pause]
+frida -U -f [APP_ID] -l frida_multiple_unpinning.js --no-pause
 */
 
 setTimeout(function() {
@@ -15,12 +396,12 @@ console.log('======');
 console.log('[#] Android Bypass for various Certificate Pinning methods [#]');
 console.log('======');
 
-var errDict = {};
+
+var X509TrustManager = Java.use('javax.net.ssl.X509TrustManager');
+var SSLContext = Java.use('javax.net.ssl.SSLContext');
 
 // TrustManager (Android < 7) //
 ////////////////////////////////
-var X509TrustManager = Java.use('javax.net.ssl.X509TrustManager');
-var SSLContext = Java.use('javax.net.ssl.SSLContext');
 var TrustManager = Java.registerClass({
 // Implement a custom TrustManager
 name: 'dev.asd.test.TrustManager',
@@ -54,20 +435,19 @@ console.log('[-] TrustManager (Android < 7) pinner not found');
 /////////////////////////////////
 try {
 // Bypass OkHTTPv3 {1}
-var okhttp3_Activity_1 = Java.use('okhttp3.CertificatePinner');
-okhttp3_Activity_1.check.overload('java.lang.String', 'java.util.List').implementation = function(a, b) {
+var okhttp3_Activity_1 = Java.use('okhttp3.CertificatePinner');    
+okhttp3_Activity_1.check.overload('java.lang.String', 'java.util.List').implementation = function(a, b) {                              
 console.log('[+] Bypassing OkHTTPv3 {1}: ' + a);
 return;
 };
 } catch (err) {
 console.log('[-] OkHTTPv3 {1} pinner not found');
 //console.log(err);
-errDict[err] = ['okhttp3.CertificatePinner', 'check'];
 }
 try {
 // Bypass OkHTTPv3 {2}
 // This method of CertificatePinner.check is deprecated but could be found in some old Android apps
-var okhttp3_Activity_2 = Java.use('okhttp3.CertificatePinner');
+var okhttp3_Activity_2 = Java.use('okhttp3.CertificatePinner');    
 okhttp3_Activity_2.check.overload('java.lang.String', 'java.security.cert.Certificate').implementation = function(a, b) {
 console.log('[+] Bypassing OkHTTPv3 {2}: ' + a);
 return;
@@ -75,11 +455,10 @@ return;
 } catch (err) {
 console.log('[-] OkHTTPv3 {2} pinner not found');
 //console.log(err);
-//errDict[err] = ['okhttp3.CertificatePinner', 'check'];
 }
 try {
 // Bypass OkHTTPv3 {3}
-var okhttp3_Activity_3 = Java.use('okhttp3.CertificatePinner');
+var okhttp3_Activity_3 = Java.use('okhttp3.CertificatePinner');    
 okhttp3_Activity_3.check.overload('java.lang.String', '[Ljava.security.cert.Certificate;').implementation = function(a, b) {
 console.log('[+] Bypassing OkHTTPv3 {3}: ' + a);
 return;
@@ -87,11 +466,10 @@ return;
 } catch(err) {
 console.log('[-] OkHTTPv3 {3} pinner not found');
 //console.log(err);
-errDict[err] = ['okhttp3.CertificatePinner', 'check'];
 }
 try {
 // Bypass OkHTTPv3 {4}
-var okhttp3_Activity_4 = Java.use('okhttp3.CertificatePinner'); 
+var okhttp3_Activity_4 = Java.use('okhttp3.CertificatePinner');    
 //okhttp3_Activity_4['check$okhttp'].implementation = function(a, b) {
 okhttp3_Activity_4.check$okhttp.overload('java.lang.String', 'kotlin.jvm.functions.Function0').implementation = function(a, b) {
 console.log('[+] Bypassing OkHTTPv3 {4}: ' + a);
@@ -100,8 +478,8 @@ return;
 } catch(err) {
 console.log('[-] OkHTTPv3 {4} pinner not found');
 //console.log(err);
-errDict[err] = ['okhttp3.CertificatePinner', 'check$okhttp'];
 }
+
 
 
 
@@ -117,7 +495,6 @@ return true;
 } catch (err) {
 console.log('[-] Trustkit {1} pinner not found');
 //console.log(err);
-errDict[err] = ['com.datatheorem.android.trustkit.pinning.OkHostnameVerifier', 'verify'];
 }
 try {
 // Bypass Trustkit {2}
@@ -129,18 +506,17 @@ return true;
 } catch (err) {
 console.log('[-] Trustkit {2} pinner not found');
 //console.log(err);
-errDict[err] = ['com.datatheorem.android.trustkit.pinning.OkHostnameVerifier', 'verify'];
 }
 try {
 // Bypass Trustkit {3}
 var trustkit_PinningTrustManager = Java.use('com.datatheorem.android.trustkit.pinning.PinningTrustManager');
 trustkit_PinningTrustManager.checkServerTrusted.overload('[Ljava.security.cert.X509Certificate;', 'java.lang.String').implementation = function(chain, authType) {
 console.log('[+] Bypassing Trustkit {3}');
+//return;
 };
 } catch (err) {
 console.log('[-] Trustkit {3} pinner not found');
 //console.log(err);
-errDict[err] = ['com.datatheorem.android.trustkit.pinning.PinningTrustManager', 'checkServerTrusted'];
 }
 
 
@@ -149,49 +525,26 @@ errDict[err] = ['com.datatheorem.android.trustkit.pinning.PinningTrustManager', 
 // TrustManagerImpl (Android > 7) //
 ////////////////////////////////////
 try {
-// Bypass TrustManagerImpl.checkTrustedRecursive (Android > 7) {1}
+// Bypass TrustManagerImpl (Android > 7) {1}
 var array_list = Java.use("java.util.ArrayList");
 var TrustManagerImpl_Activity_1 = Java.use('com.android.org.conscrypt.TrustManagerImpl');
 TrustManagerImpl_Activity_1.checkTrustedRecursive.implementation = function(certs, ocspData, tlsSctData, host, clientAuth, untrustedChain, trustAnchorChain, used) {
-console.log('[+] Bypassing TrustManagerImpl (Android > 7) checkTrustedRecursive {1} check: '+ host + ', ' +  untrustedChain);
+console.log('[+] Bypassing TrustManagerImpl (Android > 7) checkTrustedRecursive check: '+ host);
 return array_list.$new();
 };
 } catch (err) {
-console.log('[-] TrustManagerImpl (Android > 7) checkTrustedRecursive {1} check not found');
+console.log('[-] TrustManagerImpl (Android > 7) checkTrustedRecursive check not found');
 //console.log(err);
-}
+}  
 try {
-// Bypass TrustManagerImpl.checkTrustedRecursive (Android > 7) {2}
-var array_list = Java.use("java.util.ArrayList");
+// Bypass TrustManagerImpl (Android > 7) {2} (probably no more necessary)
 var TrustManagerImpl_Activity_2 = Java.use('com.android.org.conscrypt.TrustManagerImpl');
-TrustManagerImpl_Activity_2.checkTrustedRecursive.implementation = function(certs, host, clientAuth, untrustedChain, trustAnchorChain, used) {
-console.log('[+] Bypassing TrustManagerImpl (Android > 7) checkTrustedRecursive {2} check: '+ host + ' ' +  untrustedChain);
-return array_list.$new();
-};
-} catch (err) {
-console.log('[-] TrustManagerImpl (Android > 7) checkTrustedRecursive {2} check not found');
-//console.log(err);
-}
-try {
-// Bypass TrustManagerImpl.verifyChain (Android > 7) {1} (probably no more necessary)
-var TrustManagerImpl_Activity_3 = Java.use('com.android.org.conscrypt.TrustManagerImpl');
-TrustManagerImpl_Activity_3.verifyChain.implementation = function(untrustedChain, trustAnchorChain, host, clientAuth, ocspData, tlsSctData) {
-console.log('[+] Bypassing TrustManagerImpl (Android > 7) verifyChain {1} check: ' + host + ', ' +  untrustedChain);
+TrustManagerImpl_Activity_2.verifyChain.implementation = function(untrustedChain, trustAnchorChain, host, clientAuth, ocspData, tlsSctData) {
+console.log('[+] Bypassing TrustManagerImpl (Android > 7) verifyChain check: ' + host);
 return untrustedChain;
 };   
 } catch (err) {
-console.log('[-] TrustManagerImpl (Android > 7) verifyChain {1} check not found');
-//console.log(err);
-}
-try {
-// Bypass TrustManagerImpl.verifyChain (Android > 7) {2} (probably no more necessary)
-var TrustManagerImpl_Activity_4 = Java.use('com.android.org.conscrypt.TrustManagerImpl');
-TrustManagerImpl_Activity_4.verifyChain.implementation = function(untrustedChain, trustAnchorChain, host, clientAuth) {
-console.log('[+] Bypassing TrustManagerImpl (Android > 7) verifyChain {2} check: ' + host + ', ' +  untrustedChain);
-return untrustedChain;
-};   
-} catch (err) {
-console.log('[-] TrustManagerImpl (Android > 7) verifyChain {2} check not found');
+console.log('[-] TrustManagerImpl (Android > 7) verifyChain check not found');
 //console.log(err);
 }
 
@@ -210,7 +563,6 @@ return;
 } catch (err) {
 console.log('[-] Appcelerator PinningTrustManager pinner not found');
 //console.log(err);
-errDict[err] = ['appcelerator.https.PinningTrustManager', 'checkServerTrusted'];  
 }
 
 
@@ -227,7 +579,6 @@ return;
 } catch (err) {
 console.log('[-] Fabric PinningTrustManager pinner not found');
 //console.log(err);
-errDict[err] = ['io.fabric.sdk.android.services.network.PinningTrustManager', 'checkServerTrusted'];  
 }
 
 
@@ -242,8 +593,7 @@ console.log('[+] Bypassing OpenSSLSocketImpl Conscrypt {1}');
 };
 } catch (err) {
 console.log('[-] OpenSSLSocketImpl Conscrypt {1} pinner not found');
-//console.log(err);
-errDict[err] = ['com.android.org.conscrypt.OpenSSLSocketImpl', 'verifyCertificateChain'];
+//console.log(err);        
 }
 try {
 var OpenSSLSocketImpl = Java.use('com.android.org.conscrypt.OpenSSLSocketImpl');
@@ -252,8 +602,7 @@ console.log('[+] Bypassing OpenSSLSocketImpl Conscrypt {2}');
 };
 } catch (err) {
 console.log('[-] OpenSSLSocketImpl Conscrypt {2} pinner not found');
-//console.log(err);
-errDict[err] = ['com.android.org.conscrypt.OpenSSLSocketImpl', 'verifyCertificateChain'];  
+//console.log(err);        
 }
 
 
@@ -269,7 +618,6 @@ console.log('[+] Bypassing OpenSSLEngineSocketImpl Conscrypt: ' + b);
 } catch (err) {
 console.log('[-] OpenSSLEngineSocketImpl Conscrypt pinner not found');
 //console.log(err);
-errDict[err] = ['com.android.org.conscrypt.OpenSSLEngineSocketImpl', 'verifyCertificateChain'];
 }
 
 
@@ -284,8 +632,7 @@ console.log('[+] Bypassing OpenSSLSocketImpl Apache Harmony');
 };
 } catch (err) {
 console.log('[-] OpenSSLSocketImpl Apache Harmony pinner not found');
-//console.log(err);
-errDict[err] = ['org.apache.harmony.xnet.provider.jsse.OpenSSLSocketImpl', 'verifyCertificateChain'];   
+//console.log(err);      
 }
 
 
@@ -302,7 +649,6 @@ return true;
 } catch (err) {
 console.log('[-] PhoneGap sslCertificateChecker pinner not found');
 //console.log(err);
-errDict[err] = ['nl.xservices.plugins.sslCertificateChecker', 'execute'];
 }
 
 
@@ -320,7 +666,6 @@ return;
 } catch (err) {
 console.log('[-] IBM MobileFirst pinTrustedCertificatePublicKey {1} pinner not found');
 //console.log(err);
-errDict[err] = ['com.worklight.wlclient.api.WLClient', 'pinTrustedCertificatePublicKey'];
 }
 try {
 // Bypass IBM MobileFirst {2}
@@ -332,7 +677,6 @@ return;
 } catch (err) {
 console.log('[-] IBM MobileFirst pinTrustedCertificatePublicKey {2} pinner not found');
 //console.log(err);
-errDict[err] = ['com.worklight.wlclient.api.WLClient', 'pinTrustedCertificatePublicKey'];
 }
 
 
@@ -344,13 +688,12 @@ try {
 // Bypass IBM WorkLight {1}
 var worklight_Activity_1 = Java.use('com.worklight.wlclient.certificatepinning.HostNameVerifierWithCertificatePinning');
 worklight_Activity_1.verify.overload('java.lang.String', 'javax.net.ssl.SSLSocket').implementation = function(a, b) {
-console.log('[+] Bypassing IBM WorkLight HostNameVerifierWithCertificatePinning {1}: ' + a);
+console.log('[+] Bypassing IBM WorkLight HostNameVerifierWithCertificatePinning {1}: ' + a);                
 return;
 };
 } catch (err) {
 console.log('[-] IBM WorkLight HostNameVerifierWithCertificatePinning {1} pinner not found');
 //console.log(err);
-errDict[err] = ['com.worklight.wlclient.certificatepinning.HostNameVerifierWithCertificatePinning', 'verify'];
 }
 try {
 // Bypass IBM WorkLight {2}
@@ -362,7 +705,6 @@ return;
 } catch (err) {
 console.log('[-] IBM WorkLight HostNameVerifierWithCertificatePinning {2} pinner not found');
 //console.log(err);
-errDict[err] = ['com.worklight.wlclient.certificatepinning.HostNameVerifierWithCertificatePinning', 'verify'];
 }
 try {
 // Bypass IBM WorkLight {3}
@@ -374,7 +716,6 @@ return;
 } catch (err) {
 console.log('[-] IBM WorkLight HostNameVerifierWithCertificatePinning {3} pinner not found');
 //console.log(err);
-errDict[err] = ['com.worklight.wlclient.certificatepinning.HostNameVerifierWithCertificatePinning', 'verify'];
 }
 try {
 // Bypass IBM WorkLight {4}
@@ -386,7 +727,6 @@ return true;
 } catch (err) {
 console.log('[-] IBM WorkLight HostNameVerifierWithCertificatePinning {4} pinner not found');
 //console.log(err);
-errDict[err] = ['com.worklight.wlclient.certificatepinning.HostNameVerifierWithCertificatePinning', 'verify'];
 }
 
 
@@ -398,12 +738,12 @@ try {
 var conscrypt_CertPinManager_Activity = Java.use('com.android.org.conscrypt.CertPinManager');
 conscrypt_CertPinManager_Activity.checkChainPinning.overload('java.lang.String', 'java.util.List').implementation = function(a, b) {
 console.log('[+] Bypassing Conscrypt CertPinManager: ' + a);
-return;
+//return;
+return true;
 };
 } catch (err) {
 console.log('[-] Conscrypt CertPinManager pinner not found');
 //console.log(err);
-errDict[err] = ['com.android.org.conscrypt.CertPinManager', 'checkChainPinning'];
 }
 
 
@@ -420,9 +760,8 @@ return true;
 } catch (err) {
 console.log('[-] Conscrypt CertPinManager (Legacy) pinner not found');
 //console.log(err);
-errDict[err] = ['com.android.org.conscrypt.CertPinManager', 'isChainValid'];
 }
-   
+
    
 
 
@@ -437,7 +776,6 @@ return true;
 } catch (err) {
 console.log('[-] CWAC-Netsecurity CertPinManager pinner not found');
 //console.log(err);
-errDict[err] = ['com.commonsware.cwac.netsecurity.conscrypt.CertPinManager', 'isChainValid'];
 }
 
 
@@ -454,7 +792,6 @@ return true;
 } catch (err) {
 console.log('[-] Worklight Androidgap WLCertificatePinningPlugin pinner not found');
 //console.log(err);
-errDict[err] = ['com.worklight.androidgap.plugin.WLCertificatePinningPlugin', 'execute'];
 }
 
 
@@ -472,7 +809,6 @@ console.log('[+] Bypassing Netty FingerprintTrustManagerFactory');
 } catch (err) {
 console.log('[-] Netty FingerprintTrustManagerFactory pinner not found');
 //console.log(err);
-errDict[err] = ['io.netty.handler.ssl.util.FingerprintTrustManagerFactory', 'checkTrusted'];
 }
 
 
@@ -490,7 +826,6 @@ return;
 } catch (err) {
 console.log('[-] Squareup CertificatePinner {1} pinner not found');
 //console.log(err);
-errDict[err] = ['com.squareup.okhttp.CertificatePinner', 'check'];
 }
 try {
 // Bypass Squareup CertificatePinner {2}
@@ -502,7 +837,6 @@ return;
 } catch (err) {
 console.log('[-] Squareup CertificatePinner {2} pinner not found');
 //console.log(err);
-errDict[err] = ['com.squareup.okhttp.CertificatePinner', 'check'];
 }
 
 
@@ -520,8 +854,7 @@ return true;
 } catch (err) {
 console.log('[-] Squareup OkHostnameVerifier check not found');
 //console.log(err);
-errDict[err] = ['com.squareup.okhttp.internal.tls.OkHostnameVerifier', 'verify'];
-}
+}    
 try {
 // Bypass Squareup OkHostnameVerifier {2}
 var Squareup_OkHostnameVerifier_Activity_2 = Java.use('com.squareup.okhttp.internal.tls.OkHostnameVerifier');
@@ -532,7 +865,6 @@ return true;
 } catch (err) {
 console.log('[-] Squareup OkHostnameVerifier check not found');
 //console.log(err);
-errDict[err] = ['com.squareup.okhttp.internal.tls.OkHostnameVerifier', 'verify'];
 }
 
 
@@ -549,31 +881,26 @@ console.log('[+] Bypassing Android WebViewClient check {1}');
 } catch (err) {
 console.log('[-] Android WebViewClient {1} check not found');
 //console.log(err)
-errDict[err] = ['android.webkit.WebViewClient', 'onReceivedSslError'];
 }
-// Not working properly temporarily disused
-//try {
-//// Bypass WebViewClient {2}
-//var AndroidWebViewClient_Activity_2 = Java.use('android.webkit.WebViewClient');
-//AndroidWebViewClient_Activity_2.onReceivedHttpError.overload('android.webkit.WebView', 'android.webkit.WebResourceRequest', 'android.webkit.WebResourceResponse').implementation = function(obj1, obj2, obj3) {
-//console.log('[+] Bypassing Android WebViewClient check {2}');
-//};
-//} catch (err) {
-//console.log('[-] Android WebViewClient {2} check not found');
-////console.log(err)
-//errDict[err] = ['android.webkit.WebViewClient', 'onReceivedHttpError'];
-//}
+try {
+// Bypass WebViewClient {2}
+var AndroidWebViewClient_Activity_2 = Java.use('android.webkit.WebViewClient');
+AndroidWebViewClient_Activity_2.onReceivedSslError.overload('android.webkit.WebView', 'android.webkit.WebResourceRequest', 'android.webkit.WebResourceError').implementation = function(obj1, obj2, obj3) {
+console.log('[+] Bypassing Android WebViewClient check {2}');
+};
+} catch (err) {
+console.log('[-] Android WebViewClient {2} check not found');
+//console.log(err)
+}
 try {
 // Bypass WebViewClient {3}
 var AndroidWebViewClient_Activity_3 = Java.use('android.webkit.WebViewClient');
-//AndroidWebViewClient_Activity_3.onReceivedError.overload('android.webkit.WebView', 'int', 'java.lang.String', 'java.lang.String').implementation = function(obj1, obj2, obj3, obj4) {
-AndroidWebViewClient_Activity_3.onReceivedError.implementation = function(view, errCode, description, failingUrl) {
+AndroidWebViewClient_Activity_3.onReceivedError.overload('android.webkit.WebView', 'int', 'java.lang.String', 'java.lang.String').implementation = function(obj1, obj2, obj3, obj4) {
 console.log('[+] Bypassing Android WebViewClient check {3}');
 };
 } catch (err) {
 console.log('[-] Android WebViewClient {3} check not found');
 //console.log(err)
-errDict[err] = ['android.webkit.WebViewClient', 'onReceivedError'];
 }
 try {
 // Bypass WebViewClient {4}
@@ -584,7 +911,6 @@ console.log('[+] Bypassing Android WebViewClient check {4}');
 } catch (err) {
 console.log('[-] Android WebViewClient {4} check not found');
 //console.log(err)
-errDict[err] = ['android.webkit.WebViewClient', 'onReceivedError'];
 }
 
 
@@ -611,68 +937,34 @@ console.log('[-] Apache Cordova WebViewClient check not found');
 try {
 var boye_AbstractVerifier = Java.use('ch.boye.httpclientandroidlib.conn.ssl.AbstractVerifier');
 boye_AbstractVerifier.verify.implementation = function(host, ssl) {
-console.log('[+] Bypassing Boye AbstractVerifier check for: ' + host);
+console.log('[+] Bypassing Boye AbstractVerifier check: ' + host);
 };
 } catch (err) {
 console.log('[-] Boye AbstractVerifier check not found');
 //console.log(err);
-errDict[err] = ['ch.boye.httpclientandroidlib.conn.ssl.AbstractVerifier', 'verify'];
 }
 
 
 
-// Apache AbstractVerifier (quadruple bypass) //
-////////////////////////////////////////////////
+
+// Apache AbstractVerifier //
+/////////////////////////////
 try {
-var apache_AbstractVerifier_1 = Java.use('org.apache.http.conn.ssl.AbstractVerifier');
-apache_AbstractVerifier_1.verify.overload('java.lang.String', 'java.security.cert.X509Certificate').implementation = function(a, b) {
-console.log('[+] Bypassing Apache AbstractVerifier {1} check for: ' + a);
+var apache_AbstractVerifier = Java.use('org.apache.http.conn.ssl.AbstractVerifier');
+apache_AbstractVerifier.verify.implementation = function(a, b, c, d) {
+console.log('[+] Bypassing Apache AbstractVerifier check: ' + a);
 return;
 };
 } catch (err) {
-console.log('[-] Apache AbstractVerifier {1} check not found');
+console.log('[-] Apache AbstractVerifier check not found');
 //console.log(err);
-errDict[err] = ['org.apache.http.conn.ssl.AbstractVerifier', 'verify'];
-}
-try {
-var apache_AbstractVerifier_2 = Java.use('org.apache.http.conn.ssl.AbstractVerifier');
-apache_AbstractVerifier_2.verify.overload('java.lang.String', 'javax.net.ssl.SSLSocket').implementation = function(a, b) {
-console.log('[+] Bypassing Apache AbstractVerifier {2} check for: ' + a);
-return;
-};
-} catch (err) {
-console.log('[-] Apache AbstractVerifier {2} check not found');
-//console.log(err);
-errDict[err] = ['org.apache.http.conn.ssl.AbstractVerifier', 'verify'];
-}
-try {
-var apache_AbstractVerifier_3 = Java.use('org.apache.http.conn.ssl.AbstractVerifier');
-apache_AbstractVerifier_3.verify.overload('java.lang.String', 'javax.net.ssl.SSLSession').implementation = function(a, b) {
-console.log('[+] Bypassing Apache AbstractVerifier {3} check for: ' + a);
-return;
-};
-} catch (err) {
-console.log('[-] Apache AbstractVerifier {3} check not found');
-//console.log(err);
-errDict[err] = ['org.apache.http.conn.ssl.AbstractVerifier', 'verify'];
-}
-try {
-var apache_AbstractVerifier_4 = Java.use('org.apache.http.conn.ssl.AbstractVerifier');
-apache_AbstractVerifier_4.verify.overload('java.lang.String', '[Ljava.lang.String;', '[Ljava.lang.String;', 'boolean').implementation = function(a, b, c, d) {
-console.log('[+] Bypassing Apache AbstractVerifier {4} check for: ' + a);
-return;
-};
-} catch (err) {
-console.log('[-] Apache AbstractVerifier {4} check not found');
-//console.log(err);
-errDict[err] = ['org.apache.http.conn.ssl.AbstractVerifier', 'verify'];
 }
 
 
 
 
 // Chromium Cronet //
-/////////////////////
+/////////////////////    
 try {
 var CronetEngineBuilderImpl_Activity = Java.use("org.chromium.net.impl.CronetEngineBuilderImpl");
 // Setting argument to TRUE (default is TRUE) to disable Public Key pinning for local trust anchors
@@ -694,7 +986,6 @@ console.log('[-] Chromium Cronet pinner not found')
 
 
 
-
 // Flutter Pinning packages http_certificate_pinning and ssl_pinning_plugin (double bypass) //
 //////////////////////////////////////////////////////////////////////////////////////////////
 try {
@@ -707,7 +998,6 @@ return true;
 } catch (err) {
 console.log('[-] Flutter HttpCertificatePinning pinner not found');
 //console.log(err);
-errDict[err] = ['diefferson.http_certificate_pinning.HttpCertificatePinning', 'checkConnexion'];
 }
 try {
 // Bypass SslPinningPlugin.check {2}
@@ -719,42 +1009,30 @@ return true;
 } catch (err) {
 console.log('[-] Flutter SslPinningPlugin pinner not found');
 //console.log(err);
-errDict[err] = ['com.macif.plugin.sslpinningplugin.SslPinningPlugin', 'checkConnexion'];
 }
 
 
 
 
-// Unusual/obfuscated pinners bypass //
-///////////////////////////////////////
-try {
-// Iterating all caught pinner errors and try to overload them 
-for (var key in errDict) {
-var errStr = key;
-var targetClass = errDict[key][0]
-var targetFunc = errDict[key][1]
-var retType = Java.use(targetClass)[targetFunc].returnType.type;
-//console.log("errDict content: "+errStr+" "+targetClass+"."+targetFunc);
-if (String(errStr).includes('.overload')) {
-overloader(errStr, targetClass, targetFunc,retType);
-}
-}
-} catch (err) {
-//console.log('[-] The pinner "'+targetClass+'.'+targetFunc+'" is not unusual/obfuscated, skipping it..');
-//console.log(err);
-}
-
-
-
-
-// Dynamic SSLPeerUnverifiedException Bypasser                               //
+// Dynamic SSLPeerUnverifiedException Patcher                                //
 // An useful technique to bypass SSLPeerUnverifiedException failures raising //
 // when the Android app uses some uncommon SSL Pinning methods or an heavily //
 // code obfuscation. Inspired by an idea of: https://github.com/httptoolkit  //
 ///////////////////////////////////////////////////////////////////////////////
+function rudimentaryFix(typeName) {
+// This is a improvable rudimentary fix, if not works you can patch it manually
+if (typeName === undefined){
+return;
+} else if (typeName === 'boolean') {
+return true;
+} else {
+return null;
+}
+}
 try {
 var UnverifiedCertError = Java.use('javax.net.ssl.SSLPeerUnverifiedException');
-UnverifiedCertError.$init.implementation = function (reason) {
+UnverifiedCertError.$init.implementation = function (str) {
+console.log('\x1b[36m[!] Unexpected SSLPeerUnverifiedException occurred, trying to patch it dynamically...\x1b[0m');
 try {
 var stackTrace = Java.use('java.lang.Thread').currentThread().getStackTrace();
 var exceptionStackIndex = stackTrace.findIndex(stack =>
@@ -766,185 +1044,74 @@ var className = callingFunctionStack.getClassName();
 var methodName = callingFunctionStack.getMethodName();
 var callingClass = Java.use(className);
 var callingMethod = callingClass[methodName];
-console.log('\x1b[36m[!] Unexpected SSLPeerUnverifiedException occurred related to the method "'+className+'.'+methodName+'"\x1b[0m');
-//console.log("Stacktrace details:\n"+stackTrace);
-// Checking if the SSLPeerUnverifiedException was generated by an usually negligible (not blocking) method
-if (className == 'com.android.org.conscrypt.ActiveSession' || className == 'com.google.android.gms.org.conscrypt.ActiveSession') {
-throw 'Reason: skipped SSLPeerUnverifiedException bypass since the exception was raised from a (usually) non blocking method on the Android app';
+console.log('\x1b[36m[!] Attempting to bypass uncommon SSL Pinning method on: '+className+'.'+methodName+'\x1b[0m');
+// Skip it when already patched by Frida
+if (callingMethod.implementation) {
+return; 
 }
-else {
-console.log('\x1b[34m[!] Starting to dynamically circumvent the SSLPeerUnverifiedException for the method "'+className+'.'+methodName+'"...\x1b[0m');
-var retTypeName = callingMethod.returnType.type;
-// Skip it when the calling method was already bypassed with Frida
-if (!(callingMethod.implementation)) {
-// Trying to bypass (via implementation) the SSLPeerUnverifiedException if due to an uncommon SSL Pinning method
+// Trying to patch the uncommon SSL Pinning method via implementation
+var returnTypeName = callingMethod.returnType.type;
 callingMethod.implementation = function() {
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+className+'.'+methodName+'" via Frida function implementation\x1b[0m');
-returner(retTypeName);
+rudimentaryFix(returnTypeName);
+};
+} catch (e) {
+// Dynamic patching via implementation does not works, then trying via function overloading
+//console.log('[!] The uncommon SSL Pinning method has more than one overload); 
+if (String(e).includes(".overload")) {
+var splittedList = String(e).split(".overload");
+for (let i=2; i<splittedList.length; i++) {
+var extractedOverload = splittedList[i].trim().split("(")[1].slice(0,-1).replaceAll("'","");
+// Check if extractedOverload has multiple arguments
+if (extractedOverload.includes(",")) {
+// Go here if overloaded method has multiple arguments (NOTE: max 6 args are covered here)
+var argList = extractedOverload.split(", ");
+console.log('\x1b[36m[!] Attempting overload of '+className+'.'+methodName+' with arguments: '+extractedOverload+'\x1b[0m');
+if (argList.length == 2) {
+callingMethod.overload(argList[0], argList[1]).implementation = function(a,b) {
+rudimentaryFix(returnTypeName);
 }
+} else if (argNum == 3) {
+callingMethod.overload(argList[0], argList[1], argList[2]).implementation = function(a,b,c) {
+rudimentaryFix(returnTypeName);
 }
+}  else if (argNum == 4) {
+callingMethod.overload(argList[0], argList[1], argList[2], argList[3]).implementation = function(a,b,c,d) {
+rudimentaryFix(returnTypeName);
 }
-} catch (err2) {
-// Dynamic circumvention via function implementation does not works, then trying via function overloading
-if (String(err2).includes('.overload')) {
-overloader(err2, className, methodName, retTypeName);
+}  else if (argNum == 5) {
+callingMethod.overload(argList[0], argList[1], argList[2], argList[3], argList[4]).implementation = function(a,b,c,d,e) {
+rudimentaryFix(returnTypeName);
+}
+}  else if (argNum == 6) {
+callingMethod.overload(argList[0], argList[1], argList[2], argList[3], argList[4], argList[5]).implementation = function(a,b,c,d,e,f) {
+rudimentaryFix(returnTypeName);
+}
+} 
+// Go here if overloaded method has a single argument
 } else {
-if (String(err2).includes('SSLPeerUnverifiedException')) {
-console.log('\x1b[36m[-] Failed to dynamically circumvent SSLPeerUnverifiedException -> '+err2+'\x1b[0m');
-} else {
-//console.log('\x1b[36m[-] Another kind of exception raised during overloading  -> '+err2+'\x1b[0m');
+callingMethod.overload(extractedOverload).implementation = function(a) {
+rudimentaryFix(returnTypeName);
 }
+}
+}
+} else {
+console.log('\x1b[36m[-] Failed to dynamically patch SSLPeerUnverifiedException '+e+'\x1b[0m');
 }
 }
 //console.log('\x1b[36m[+] SSLPeerUnverifiedException hooked\x1b[0m');
-return this.$init(reason);
+return this.$init(str);
 };
-} catch (err1) {
+} catch (err) {
 //console.log('\x1b[36m[-] SSLPeerUnverifiedException not found\x1b[0m');
-//console.log('\x1b[36m'+err1+'\x1b[0m');
+//console.log('\x1b[36m'+err+'\x1b[0m');
 }
+
+
 
  
 });
 
 }, 0);
-
-
-
-
-function returner(typeName) {
-// This is a improvable rudimentary fix, if not works you can patch it manually
-//console.log("typeName: "+typeName)
-if (typeName === undefined || typeName === 'void') {
-return;
-} else if (typeName === 'boolean') {
-return true;
-} else {
-return null;
-}
-}
-
-
-function overloader(errStr, targetClass, targetFunc, retType) {
-// One ring to overload them all.. ;-)
-var tClass = Java.use(targetClass);
-var tFunc = tClass[targetFunc];
-var params = [];
-var argList = [];
-var overloads = tFunc.overloads;
-var returnTypeName = retType;
-var splittedList = String(errStr).split('.overload');
-for (var n=1; n<splittedList.length; n++) {
-var extractedOverload = splittedList[n].trim().split('(')[1].slice(0,-1).replaceAll("'","");
-// Discarding useless error strings
-if (extractedOverload.includes('<signature>')) {
-continue;
-}
-console.log('\x1b[34m[!] Found the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"\x1b[0m');
-// Check if extractedOverload is empty
-if (!extractedOverload) {
-// Overloading method withouth arguments
-tFunc.overload().implementation = function() {
-var printStr = printer();
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-} else {
-// Check if extractedOverload has multiple arguments
-if (extractedOverload.includes(',')) {
-argList = extractedOverload.split(', ');
-} 
-// Considering max 8 arguments for the method to overload (Note: increase it, if needed)
-if (argList.length == 0) {
-tFunc.overload(extractedOverload).implementation = function(a) {
-var printStr = printer();
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-} else if (argList.length == 2) {
-tFunc.overload(argList[0], argList[1]).implementation = function(a,b) {
-var printStr = printer(a);
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-} else if (argList.length == 3) {
-tFunc.overload(argList[0], argList[1], argList[2]).implementation = function(a,b,c) {
-var printStr = printer(a,b);
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-} else if (argList.length == 4) {
-tFunc.overload(argList[0], argList[1], argList[2], argList[3]).implementation = function(a,b,c,d) {
-var printStr = printer(a,b,c);
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-}  else if (argList.length == 5) {
-tFunc.overload(argList[0], argList[1], argList[2], argList[3], argList[4]).implementation = function(a,b,c,d,e) {
-var printStr = printer(a,b,c,d);
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-}  else if (argList.length == 6) {
-tFunc.overload(argList[0], argList[1], argList[2], argList[3], argList[4], argList[5]).implementation = function(a,b,c,d,e,f) {
-var printStr = printer(a,b,c,d,e);
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-}  else if (argList.length == 7) {
-tFunc.overload(argList[0], argList[1], argList[2], argList[3], argList[4], argList[5], argList[6]).implementation = function(a,b,c,d,e,f,g) {
-var printStr = printer(a,b,c,d,e,f);
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-}  else if (argList.length == 8) {
-tFunc.overload(argList[0], argList[1], argList[2], argList[3], argList[4], argList[5], argList[6], argList[7]).implementation = function(a,b,c,d,e,f,g,h) {
-var printStr = printer(a,b,c,d,e,f,g);
-console.log('\x1b[34m[+] Bypassing the unusual/obfuscated pinner "'+targetClass+'.'+targetFunc+'('+extractedOverload+')"'+printStr+'\x1b[0m');
-returner(returnTypeName);
-}
-}
-}
-
-}
-}
-
-
-function printer(a,b,c,d,e,f,g,h) {
-// Build the string to print for the overloaded pinner
-var printList = [];
-var printStr = '';
-if (typeof a === 'string') {
-printList.push(a);
-}
-if (typeof b === 'string') {
-printList.push(b);
-}
-if (typeof c === 'string') {
-printList.push(c);
-}
-if (typeof d === 'string') {
-printList.push(d);
-}
-if (typeof e === 'string') {
-printList.push(e);
-}
-if (typeof f === 'string') {
-printList.push(f);
-}
-if (typeof g === 'string') {
-printList.push(g);
-}
-if (typeof h === 'string') {
-printList.push(h);
-}
-if (printList.length !== 0) {
-printStr = ' check for:';
-for (var i=0; i<printList.length; i++) {
-printStr += ' '+printList[i];
-}
-}
-return printStr;
-}
+});
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:-709320614 @akabe1/frida-multiple-unpinning
+//hash:-1086918033 @Raghav-Gupta99/test-1

@@ -1,6 +1,6 @@
 
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:1579656849 @monkeywave/androidtlskeylogger
+//hash:-90729149 @monkeywave/androidtlskeylogger
 /* 
    AndroidTLSKeylogger hooks common SSL libraries on Android to extract the TLS key material to the terminal
    
@@ -37,7 +37,7 @@ function get_key_from_ptr(key_ptr){
 
             // Iterate through the memory to determine key length
             while (calculatedKeyLength < MAX_KEY_LENGTH) {
-                const byte = Memory.readU8(key_ptr.add(calculatedKeyLength)); // Read one byte at a time
+                const byte = key_ptr.add(calculatedKeyLength).readU8(); // Read one byte at a time
 
 
                 if (byte === 0) { // Stop if null terminator is found (optional, adjust as needed)
@@ -59,7 +59,7 @@ function get_key_from_ptr(key_ptr){
                 KEY_LENGTH = 32; // fall back size
             }
 
-        const keyData = Memory.readByteArray(key_ptr, KEY_LENGTH); // Read the key data (KEY_LENGTH bytes)
+        const keyData = key_ptr.readByteArray(KEY_LENGTH); // Read the key data (KEY_LENGTH bytes)
         
         // Convert the byte array to a string of space-separated hex values
         const hexKey = Array
@@ -85,7 +85,7 @@ function get_client_random(s3_ptr,SSL3_RANDOM_SIZE) {
         var client_random_ptr = s3_ptr.add(0x30);
 
         // Read the client_random bytes (32 bytes)
-        var client_random = Memory.readByteArray(client_random_ptr, SSL3_RANDOM_SIZE);
+        var client_random = client_random_ptr.readByteArray(SSL3_RANDOM_SIZE);
 
         // Convert the bytes to an uppercase, concatenated hex string
         const hexClientRandom = Array
@@ -245,7 +245,7 @@ function hook_ssl_log_secret(module_name){
 
 function hookLibrary(libname) {
     try {
-        let sslCtxNewPtr = Module.findExportByName(libname, "SSL_CTX_new");
+        let sslCtxNewPtr = Process.getModuleByName(libname).getExportByName("SSL_CTX_new");
         if (sslCtxNewPtr) {
             console.log("[*] Found SSL_CTX_new in " + libname + " at " + sslCtxNewPtr);
             Interceptor.attach(sslCtxNewPtr, {
@@ -257,12 +257,12 @@ function hookLibrary(libname) {
                     
                     let keylog_callback = new NativeCallback(function (ctx, line) {
                         // 'line' is a pointer to a C string.
-                        let logLine = Memory.readCString(line);
+                        let logLine = line.readCString();
                         console.log("[*] KEYLOG: " + logLine);
                     }, 'void', ['pointer', 'pointer']);
 
                     // Look up SSL_CTX_set_keylog_callback in the same library.
-                    let setKeylogPtr = Module.findExportByName(libname, "SSL_CTX_set_keylog_callback");
+                    let setKeylogPtr = Process.getModuleByName(libname).getExportByName("SSL_CTX_set_keylog_callback");
                     if (setKeylogPtr) {
                         console.log("[*] Found SSL_CTX_set_keylog_callback in " + libname + " at " + setKeylogPtr);
                         let setKeylog = new NativeFunction(setKeylogPtr, 'void', ['pointer', 'pointer']);
@@ -286,13 +286,13 @@ function hookLibrary(libname) {
 function hookDlopen() {
     const DLOPEN_FUNCS = ["dlopen", "android_dlopen_ext"];
     DLOPEN_FUNCS.forEach(function(name) {
-        let addr = Module.findExportByName(null, name);
+        let addr = Module.getGlobalExportByName(name);
         if (addr) {
             console.log("[*] Hooking " + name + " at " + addr);
             Interceptor.attach(addr, {
                 onEnter: function(args) {
                     // Read the name of the library being loaded.
-                    this.libName = Memory.readCString(args[0]);
+                    this.libName = args[0].readCString();
                     // Optionally log the library name.
                     // console.log("[*] " + name + " called for: " + this.libName);
                 },
@@ -342,4 +342,5 @@ BORING_TARGET_LIBS.forEach(function(lib) {
 // Then, install hooks on dlopen to catch future loads.
 hookDlopen();
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:1579656849 @monkeywave/androidtlskeylogger
+//hash:-90729149 @monkeywave/androidtlskeylogger
+ger

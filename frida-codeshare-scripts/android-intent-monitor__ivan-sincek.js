@@ -1,6 +1,6 @@
 
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:283892857 @ivan-sincek/android-intent-monitor
+//hash:1447414009 @ivan-sincek/android-intent-monitor
 /************************************************************************
  * Name: Android Intent Monitor
  * OS: Android
@@ -12,15 +12,16 @@ var text = [];
 var tmp = null;
 tmp = intent.getComponent();
 if (tmp) {
-text.push("Activity: " + tmp.getClassName());
-}
-tmp = intent.getAction();
-if (tmp) {
-text.push("Action: " + tmp);
+text.push("Package Name: " + tmp.getPackageName());
+text.push("Class Name: " + tmp.getClassName());
 }
 tmp = intent.getData();
 if (tmp) {
 text.push("URI: " + tmp);
+}
+tmp = intent.getAction();
+if (tmp) {
+text.push("Action: " + tmp);
 }
 tmp = intent.getFlags();
 if (tmp) {
@@ -34,10 +35,10 @@ tmp = intent.getExtras();
 if (tmp) {
 var keys = tmp.keySet().iterator();
 while (keys.hasNext()) {
+var type = "null";
+var value = "null";
 var key = keys.next();
 var obj = tmp.get(key);
-var value = "null";
-var type = "";
 if (obj) {
 try {
 type = obj.getClass().getSimpleName();
@@ -71,4 +72,4 @@ Intent.getData.implementation = hookGetData;
 });
 }, 0);
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:283892857 @ivan-sincek/android-intent-monitor
+//hash:1447414009 @ivan-sincek/android-intent-monitor

@@ -1,8 +1,9 @@
 
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:-658287805 @k19x/aes-crypto-universal
-// by: Caique Pascoal (kiqx8)
-// frida -U -n "<APPNAME> -l script_crypto.js --no-pause"
+//hash:825336679 @k19x/aes-crypto-universal
+// by: Caique Pascoal (kiqx8
+// powered by: Doninha korea
+// frida -U -n "<APPNAME> -l script_crypto.js"
 
 Java.perform(function() {
     try {
@@ -50,4 +51,4 @@ Java.perform(function() {
     }
 });
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:-658287805 @k19x/aes-crypto-universal
+//hash:825336679 @k19x/aes-crypto-universal
