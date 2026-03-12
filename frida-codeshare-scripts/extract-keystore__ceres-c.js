@@ -1,12 +1,13 @@
 
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:982424298 @ceres-c/extract-keystore
+//hash:1898765655 @ceres-c/extract-keystore
 #!/usr/bin/python3
 
 '''
 author: ceres-c
 usage: ./frida-extract-keystore.py
        Once the keystore(s) have been exported you have to convert them to PKCS12 using keytool
+NOTE: Updated Frida 17 fork here https://github.com/JJK96/frida-extract-keystore
 '''
 
 import frida, sys, time
@@ -115,4 +116,4 @@ except KeyboardInterrupt:
     print ("\nExiting now")
     exit(0)
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:982424298 @ceres-c/extract-keystore
+//hash:1898765655 @ceres-c/extract-keystore

@@ -1,6 +1,12 @@
 
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:-1686920056 @luca-regne/android-freerasp-bypass
+//hash:-1956057009 @luca-regne/android-freerasp-bypass
+/* 
+   frida -U -f package.name --codeshare luca-regne/android-freerasp-bypass --no-pause
+   Android freeRASP Bypass by regne
+   https://fireshellsecurity.team/bhackctf2024-bypass-freerasp-callbacks/
+*/
+
 Java.perform(function() {
     var Intent = Java.use("android.content.Intent");
     Intent.getStringExtra.overload('java.lang.String').implementation = function(str) {
@@ -15,4 +21,4 @@ Java.perform(function() {
     };
 });
 //https://github.com/zengfr/frida-codeshare-scripts QQGroup: 143824179 .
-//hash:-1686920056 @luca-regne/android-freerasp-bypass
+//hash:-1956057009 @luca-regne/android-freerasp-bypass
